@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test": "jest"
   },
   "dependencies": {
     "next": "12.1.0",
@@ -16,6 +17,8 @@
   "devDependencies": {
     "eslint": "8.11.0",
     "eslint-config-next": "12.1.0",
-    "next-pwa": "^5.4.6"
+    "jest": "^27.5.1",
+    "next-pwa": "^5.4.6",
+    "xml2js": "^0.4.23"
   }
 }
