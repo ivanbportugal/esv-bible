@@ -15,7 +15,6 @@ export default function Chapter({ data = {} }) {
   }
 
   if (!slug || !data.verses) {
-    console.error('WHAT!?!?! ' + slug, data);
     return <ErrorPage statusCode={403} />
   }
 
