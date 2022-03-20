@@ -3,7 +3,7 @@
     "background_color": "#dededb",
     "display": "fullscreen",
     "scope": "/esv-bible",
-    "start_url": "/esv-bible",
+    "start_url": "https://ivanbportugal.github.io/esv-bible",
     "name": "ESV Bible",
     "short_name": "esv-bible",
     "description": "ESV Translation of the Bible",
@@ -16,7 +16,8 @@
         {
             "src": "/esv-bible/icon-256x256.png",
             "sizes": "256x256",
-            "type": "image/png"
+            "type": "image/png",
+            "purpose": "any maskable"
         },
         {
             "src": "/esv-bible/icon-384x384.png",
