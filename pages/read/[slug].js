@@ -14,8 +14,9 @@ export default function Chapter({ data = {} }) {
     return <ErrorPage statusCode={404} />
   }
 
-  if (!data.verses) {
+  if (!slug || !data.verses) {
     console.error('WHAT!?!?! ' + slug, data);
+    return <ErrorPage statusCode={403} />
   }
 
   const verses = data.verses.map((verse) => (
@@ -25,8 +26,12 @@ export default function Chapter({ data = {} }) {
     </span>
   ))
 
-  const prev = data.prev.link ? <Link className={styles.nextprev} href={data.prev.link} title={data.prev.name}>&#8610;</Link> : <Link className={styles.nextprev} href='#' title={data.prev.name}>&#8610;</Link>
-  const next = data.next.link ? <Link className={styles.nextprev} href={data.next.link} title={data.next.name}>&#8611;</Link> : <Link className={styles.nextprev} href='#' title={data.next.name}>&#8611;</Link>
+  const prev = data.prev.link
+    ? <Link href={data.prev.link}><a title={data.prev.name} className={styles.nextprev}>&#8610;</a></Link>
+    : <Link href='#'><a title={data.prev.name} className={styles.nextprev}>&#8610;</a></Link>
+  const next = data.next.link
+    ? <Link href={data.next.link}><a title={data.next.name} className={styles.nextprev}>&#8611;</a></Link>
+    : <Link href='#'><a title={data.next.name} className={styles.nextprev}>&#8611;</a></Link>
 
   return <div className={styles.container}>
     <Head>
@@ -35,7 +40,7 @@ export default function Chapter({ data = {} }) {
       <link rel="icon" href="/favicon.ico" />
     </Head>
     <div className={styles.topactions}>
-      <Link href='/'>Index</Link>
+      <Link href='/'><a>Index</a></Link>
     </div>
     <main className={styles.main}>
       <h2 className={styles.subtitle}>{data.bookName} {data.chapterName}</h2>

@@ -19,12 +19,12 @@ export default function Home({ data = {} }) {
       </li>);
       // Goes to the ACTUAL text (but this is the anchor location)
       return <li key={unique} id={bookName} className={styles.booklist}>
-        <Link href={url}>{bookName} {chapterName}</Link>
+        <Link href={url}><a>{bookName} {chapterName}</a></Link>
       </li>
     }
     // Goes to the ACTUAL text (no anchor)
     return <li key={unique} className={styles.chapterlist}>
-      <Link href={url}>{bookName} {chapterName}</Link>
+      <Link href={url}><a>{bookName} {chapterName}</a></Link>
     </li>
   });
 
