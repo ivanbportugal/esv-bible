@@ -2,8 +2,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import styles from '../styles/Home.module.css';
 import { getChapters } from '../lib/get-json';
-import { Index } from 'flexsearch';
-import { useEffect } from 'react';
+import Search from '../components/search';
 
 export default function Home({ data = {} }) {
 
@@ -30,15 +29,6 @@ export default function Home({ data = {} }) {
     </li>
   });
 
-  useEffect(() => {
-    // load the index on the client
-    const rawData = window.__NEXT_DATA__?.props?.pageProps?.data;
-    if (rawData) {
-      const index = new Index(options);
-      // TODO add to index
-    }
-  }, []);
-
   return (
     <div className={styles.container}>
       <Head>
@@ -46,6 +36,10 @@ export default function Home({ data = {} }) {
         <meta name="description" content="The ESV translation" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+
+      <div className={styles.searchcontainer}>
+        <Search />
+      </div>
 
       <main className={styles.main}>
         <h1 className={styles.title}>
