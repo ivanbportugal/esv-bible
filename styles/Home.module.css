@@ -154,6 +154,17 @@
   padding: 1rem;
 }
 
+.searchcontainer {
+  position: fixed;
+  line-height: 1;
+  font-size: 1rem;
+  top: 0;
+  right: 0;
+  padding: 1rem;
+  max-width: calc(100% - 100px);
+  min-width: 230px;
+}
+
 .bottomactions {
   position: fixed;
   display: flex;

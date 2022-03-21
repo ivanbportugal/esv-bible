@@ -1,0 +1,34 @@
+.suggestions {
+  border: 1px solid #0070f3;
+  background-color: #fff;
+  padding: 1rem 1.5rem;
+  border-radius: 1rem;
+}
+
+.suglink {
+  list-style: none;
+  line-height: 1.5rem;
+  text-decoration: underline;
+}
+
+.searchicon, .exicon {
+  padding: 0.5rem 0.7rem;
+  margin-left: 0.3rem;
+  border-radius: 50%;
+  border: 0;
+  cursor: pointer;
+}
+
+.searchwrapper {
+  display: flex;
+  justify-content: space-between;
+  max-width: 10rem;
+}
+
+.searchwrapper input {
+  border-radius: .4rem;
+}
+
+.searchsvg {
+  width: 1rem;
+}

@@ -2,6 +2,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import styles from '../styles/Home.module.css';
 import { getChapters } from '../lib/get-json';
+import Search from '../components/search';
 
 export default function Home({ data = {} }) {
 
@@ -35,6 +36,10 @@ export default function Home({ data = {} }) {
         <meta name="description" content="The ESV translation" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+
+      <div className={styles.searchcontainer}>
+        <Search />
+      </div>
 
       <main className={styles.main}>
         <h1 className={styles.title}>
