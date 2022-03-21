@@ -2,7 +2,7 @@
     "theme_color": "#6987f9",
     "background_color": "#dededb",
     "display": "fullscreen",
-    "scope": "/esv-bible",
+    "scope": "https://ivanbportugal.github.io/esv-bible",
     "start_url": "https://ivanbportugal.github.io/esv-bible",
     "name": "ESV Bible",
     "short_name": "esv-bible",
