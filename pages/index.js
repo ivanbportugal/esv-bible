@@ -60,7 +60,7 @@ export default function Home({ data = {} }) {
               </li>
               <li>
                 <p style={{textDecoration: 'underline'}}>Do you want money for your work?</p>
-                <p>No. But you can always <a target='_blank' href='https://buymeacoffee.com/ivanportugal'>Buy Me a Coffee</a></p>
+                <p>No. But you can always <a target='_blank' rel="noreferrer" href='https://buymeacoffee.com/ivanportugal'>Buy Me a Coffee</a></p>
               </li>
               <li>
                 <p style={{textDecoration: 'underline'}}>Do you track my usage?</p>
@@ -72,7 +72,7 @@ export default function Home({ data = {} }) {
               </li>
               <li>
                 <p style={{textDecoration: 'underline'}}>I have a feature request and / or see a bug. (Or I just have more questions and comments)</p>
-                <p><a href='mailto:ivanbportugal@gmail.com'>Email</a> me or <a target='_blank' href='https://buymeacoffee.com/ivanportugal'>Buy Me a Coffee</a> with your request.</p>
+                <p><a href='mailto:ivanbportugal@gmail.com'>Email</a> me or <a target='_blank' rel="noreferrer" href='https://buymeacoffee.com/ivanportugal'>Buy Me a Coffee</a> with your request.</p>
               </li>
             </ul>
 
@@ -94,7 +94,7 @@ export default function Home({ data = {} }) {
       </main>
 
       <footer className={styles.footer}>
-          <span className={styles.stylelinks}>Powered by the word of God (and <a target='_blank' href='https://buymeacoffee.com/ivanportugal'>coffee</a>).</span>
+          <span className={styles.stylelinks}>Powered by the word of God (and <a target='_blank' rel="noreferrer" href='https://buymeacoffee.com/ivanportugal'>coffee</a>).</span>
       </footer>
     </div>
   )

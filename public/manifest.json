@@ -2,30 +2,30 @@
     "theme_color": "#6987f9",
     "background_color": "#dededb",
     "display": "fullscreen",
-    "scope": "https://ivanbportugal.github.io/esv-bible",
-    "start_url": "https://ivanbportugal.github.io/esv-bible",
+    "scope": "https://swrd.org",
+    "start_url": "https://swrd.org",
     "name": "ESV Bible",
     "short_name": "esv-bible",
     "description": "ESV Translation of the Bible",
     "icons": [
         {
-            "src": "/esv-bible/icon-192x192.png",
+            "src": "/icon-192x192.png",
             "sizes": "192x192",
             "type": "image/png"
         },
         {
-            "src": "/esv-bible/icon-256x256.png",
+            "src": "/icon-256x256.png",
             "sizes": "256x256",
             "type": "image/png",
             "purpose": "any maskable"
         },
         {
-            "src": "/esv-bible/icon-384x384.png",
+            "src": "/icon-384x384.png",
             "sizes": "384x384",
             "type": "image/png"
         },
         {
-            "src": "/esv-bible/icon-512x512.png",
+            "src": "/icon-512x512.png",
             "sizes": "512x512",
             "type": "image/png"
         }
