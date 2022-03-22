@@ -21,13 +21,6 @@
   align-items: center;
 }
 
-.footer a {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-grow: 1;
-}
-
 .title a {
   color: #0070f3;
   text-decoration: none;
@@ -199,4 +192,9 @@
 
 .nextprev:hover:before {
   display:block;
+}
+
+.stylelinks a {
+  color: #0070f3;
+  text-decoration: underline;
 }
