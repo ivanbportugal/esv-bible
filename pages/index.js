@@ -3,8 +3,11 @@ import Link from 'next/link';
 import styles from '../styles/Home.module.css';
 import { getChapters } from '../lib/get-json';
 import Search from '../components/search';
+import { useState, useEffect } from 'react';
 
 export default function Home({ data = {} }) {
+
+  const [isAllVisible, setAllVisible] = useState(false);
 
   const allBookChapters = data
   let currentBookName;
@@ -28,6 +31,22 @@ export default function Home({ data = {} }) {
       <Link href={url}><a>{bookName} {chapterName}</a></Link>
     </li>
   });
+
+  const listenToScroll = () => {
+    // Show all the chapters once the user scrolls a little bit
+    let heightToShow = 300;
+    const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+
+    if (!isAllVisible && winScroll > heightToShow) {  
+      setAllVisible(true);
+    } 
+  }
+
+  useEffect(() => {   
+    window.addEventListener("scroll", listenToScroll);
+    return () => 
+       window.removeEventListener("scroll", listenToScroll); 
+  }, [])
 
   return (
     <div className={styles.container}>
@@ -87,9 +106,9 @@ export default function Home({ data = {} }) {
 
         <hr />
 
-        <ul className={styles.homelist}>
+        {isAllVisible && <ul className={styles.homelist}>
           {listOfAll}
-        </ul>
+        </ul>}
 
       </main>
 
