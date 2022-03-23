@@ -4,7 +4,7 @@ import styles from './Search.module.css';
 import Link from 'next/link';
 import SearchIcon from './searchicon';
 
-export default function Search() {
+export default function SearchComponent() {
 
   const [suggestions, setSuggestions] = useState([]);
   const [searchOpen, setSearchOpen] = useState(false);
@@ -20,6 +20,7 @@ export default function Search() {
         }
       });
       window.searchEngine = index;
+      window.searchEngineLookup = {};
       // add each to index
       const totalCount = rawData.length;
       for (const bookChapter of rawData) {
@@ -31,6 +32,7 @@ export default function Search() {
             id: uniqueWithVerse,
             content: text
           });
+          window.searchEngineLookup[uniqueWithVerse] = text;
         }
       }
       console.log(`Finished indexing all ${totalCount} chapters`);
@@ -48,17 +50,19 @@ export default function Search() {
       if (results && results.length > 0) {
         const resultset = results[0];
         const finalset = resultset.result;
-        // This should be an array of strings
-        setSuggestions(finalset);
+        // This should be an array of strings, let's make it into a map
+        const finalLookup = finalset.map((theKey) => ({ key: theKey, text: window.searchEngineLookup[theKey] }));
+        setSuggestions(finalLookup);
       }
     }
   }
 
-  const renderedSuggestions = suggestions?.map((sug) => {
-    const unique = sug.substring(0, sug.indexOf(':'));
+  const renderedSuggestions = suggestions?.map(({ key, text }) => {
+    const unique = key.substring(0, key.indexOf(':'));
     const url = `/read/${unique}`;
-    return <li key={sug} className={styles.suglink}>
-      <Link href={url}><a>{sug}</a></Link>
+    return <li key={key} className={styles.suglink}>
+      <Link href={url}><a>{key}</a></Link>
+      <span>{ text }</span>
     </li>
   });
 
@@ -68,7 +72,7 @@ export default function Search() {
   }
 
   const renderedSearch = searchOpen
-    ? (<><input type="text" onChange={onSearchType} placeholder='Search Anything' />
+    ? (<><input type="text" autoFocus onChange={onSearchType} placeholder='Search Anything' />
       <button onClick={() => toggleSearch(false)} className={styles.exicon}>x</button></>)
     : <><span></span><button onClick={() => toggleSearch(true)} className={styles.searchicon}><SearchIcon /></button></>;
 

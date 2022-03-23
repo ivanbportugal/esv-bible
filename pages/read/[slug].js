@@ -36,7 +36,6 @@ export default function Chapter({ data = {} }) {
     <Head>
       <title>ESV: {data.bookName}: {data.verseName}</title>
       <meta name="description" content="The ESV translation" />
-      <link rel="icon" href="/favicon.ico" />
     </Head>
     <div className={styles.topactions}>
       <Link href='/'><a>Index</a></Link>

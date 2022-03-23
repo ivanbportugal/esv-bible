@@ -179,9 +179,9 @@
   bottom: 0;
   left: 0;
   right: 0;
-  max-width: 300px;
+  max-width: 260px;
   text-align: center;
-  margin: 0 0 1rem calc(50% - 150px);
+  margin: 0 0 1rem calc(50% - 140px);
   background-color: #fff;
   border: 1px solid #555;
   border-radius: 1rem;

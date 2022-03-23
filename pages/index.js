@@ -2,7 +2,6 @@ import Head from 'next/head';
 import Link from 'next/link';
 import styles from '../styles/Home.module.css';
 import { getChapters } from '../lib/get-json';
-import Search from '../components/search';
 import { useState, useEffect } from 'react';
 
 export default function Home({ data = {} }) {
@@ -34,7 +33,7 @@ export default function Home({ data = {} }) {
 
   const listenToScroll = () => {
     // Show all the chapters once the user scrolls a little bit
-    let heightToShow = 300;
+    let heightToShow = 10;
     const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
 
     if (!isAllVisible && winScroll > heightToShow) {  
@@ -42,7 +41,9 @@ export default function Home({ data = {} }) {
     } 
   }
 
-  useEffect(() => {   
+  useEffect(() => {
+    // in case you navigate to a lower point of the page
+    listenToScroll();
     window.addEventListener("scroll", listenToScroll);
     return () => 
        window.removeEventListener("scroll", listenToScroll); 
@@ -53,11 +54,10 @@ export default function Home({ data = {} }) {
       <Head>
         <title>The ESV Bible</title>
         <meta name="description" content="The ESV translation" />
-        <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <div className={styles.searchcontainer}>
-        <Search />
+        <Link href='/search'><a>Search</a></Link>
       </div>
 
       <main className={styles.main}>
@@ -121,6 +121,7 @@ export default function Home({ data = {} }) {
 
 export async function getStaticProps() {
   const allText = await getChapters();
+  // const noVerses = allText.map(({ bookName, chapterName, unique }) => ({ bookName, chapterName, unique }))
   return {
     props: {
       data: allText
