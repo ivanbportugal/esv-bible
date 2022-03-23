@@ -1,6 +1,6 @@
 import Head from 'next/head';
-import styles from '../../styles/Home.module.css';
-import SearchComponent from '../../components/searchcomponent';
+import styles from '../styles/Home.module.css';
+import SearchComponent from '../components/searchcomponent';
 
 export default function Search() {
 
