@@ -1,6 +1,7 @@
 import Head from 'next/head';
 import styles from '../styles/Home.module.css';
 import SearchComponent from '../components/searchcomponent';
+import { getChapters } from '../lib/get-json';
 
 export default function Search() {
 
@@ -17,11 +18,12 @@ export default function Search() {
   )
 }
 
-// export async function getStaticProps() {
-//   const allText = await getChapters();
-//   return {
-//     props: {
-//       data: allText
-//     }
-//   }
-// }
+// Need this data in memory in the SearchComponent
+export async function getStaticProps() {
+  const allText = await getChapters();
+  return {
+    props: {
+      data: allText
+    }
+  }
+}
