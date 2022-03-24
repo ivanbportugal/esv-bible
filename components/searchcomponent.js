@@ -2,14 +2,14 @@ import { useState, useEffect } from 'react';
 import { Document } from 'flexsearch';
 import styles from './Search.module.css';
 import Link from 'next/link';
-import SearchIcon from './searchicon';
-import { IconButton, Input } from '@chakra-ui/react';
+import { IconButton, Input, List, ListItem } from '@chakra-ui/react';
 import { CloseIcon } from '@chakra-ui/icons';
 
 export default function SearchComponent() {
 
   const [suggestions, setSuggestions] = useState([]);
-  const [searchOpen, setSearchOpen] = useState(false);
+  const [searchValue, setSearchValue] = useState('');
+  // const [searchOpen, setSearchOpen] = useState(false);
 
   useEffect(() => {
     // load the index on the client
@@ -44,6 +44,7 @@ export default function SearchComponent() {
   }, []);
 
   function onSearchType(event) {
+    setSearchValue(event.target.value)
     if (window.searchEngine) {
       setSuggestions([]);
       const term = event.target.value;
@@ -62,19 +63,24 @@ export default function SearchComponent() {
   const renderedSuggestions = suggestions?.map(({ key, text }) => {
     const unique = key.substring(0, key.indexOf(':'));
     const url = `/read/${unique}`;
-    return <li key={key} className={styles.suglink}>
-      <Link href={url}><a>{key}</a></Link>
-      <span>{ text }</span>
-    </li>
+    return <ListItem key={key}>
+      <div><Link href={url}><a className={styles.suglink}>{key}</a></Link></div>
+      <p>{ text }</p>
+    </ListItem>
   });
+
+  const onCloseClicked = () => {
+    setSuggestions([]);
+    setSearchValue('');
+  }
 
   return <>
     <div className={styles.searchwrapper}>
-      <Input placeholder='Search Anything' onChange={onSearchType}/>
-      <IconButton icon={<CloseIcon />} onClick={() => setSuggestions([])} />
+      <Input value={searchValue} placeholder='Search Anything' onChange={onSearchType} />
+      <IconButton icon={<CloseIcon />} onClick={() => onCloseClicked()} />
     </div>
-    {suggestions.length > 0 && <ul className={styles.suggestions}>
+    {suggestions.length > 0 && <List spacing={3} className={styles.suggestions}>
       {renderedSuggestions}
-    </ul>}
+    </List>}
   </>
 }

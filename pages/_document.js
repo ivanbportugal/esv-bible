@@ -2,7 +2,7 @@ import { ColorModeScript } from "@chakra-ui/react";
 import { Html, Head, Main, NextScript } from "next/document";
 // import ActionsComponent from "../components/actions.component.js";
 import { prefix } from '../lib/prefix.js';
-import theme from './theme';
+import theme from '../components/theme';
 
 function MyDocument() {
   const favicon = `${prefix}/favicon.ico`;

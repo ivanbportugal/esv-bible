@@ -2,11 +2,8 @@ import Head from 'next/head';
 import Link from 'next/link';
 import styles from '../styles/Home.module.css';
 import { getChapters } from '../lib/get-json';
-import { useState, useEffect } from 'react';
 
 export default function Home({ data = {} }) {
-
-  // const [isAllVisible, setAllVisible] = useState(false);
 
   const allBookChapters = data
   let currentBookName;

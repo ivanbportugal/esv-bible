@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import styles from '../styles/Home.module.css';
+import styles from '../styles/Search.module.css';
 import SearchComponent from '../components/searchcomponent';
 import { getChapters } from '../lib/get-json';
 
@@ -11,7 +11,7 @@ export default function Search() {
         <title>The ESV Bible - Search</title>
         <meta name="description" content="The ESV translation, search" />
       </Head>
-      <main className={styles.main}>
+      <main className={styles.searchmain}>
         <SearchComponent />
       </main>
     </div>
