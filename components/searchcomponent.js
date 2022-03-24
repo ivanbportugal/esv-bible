@@ -68,19 +68,8 @@ export default function SearchComponent() {
     </li>
   });
 
-  // const toggleSearch = (value) => {
-  //   setSearchOpen(value);
-  //   setSuggestions([]);
-  // }
-
-  // const renderedSearch = searchOpen
-  //   ? (<><input type="text" autoFocus onChange={onSearchType} placeholder='Search Anything' />
-  //     <button onClick={() => toggleSearch(false)} className={styles.exicon}>x</button></>)
-  //   : <><span></span><button onClick={() => toggleSearch(true)} className={styles.searchicon}><SearchIcon /></button></>;
-
   return <>
     <div className={styles.searchwrapper}>
-      {/* {renderedSearch} */}
       <Input placeholder='Search Anything' onChange={onSearchType}/>
       <IconButton icon={<CloseIcon />} onClick={() => setSuggestions([])} />
     </div>
