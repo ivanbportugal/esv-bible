@@ -4,6 +4,8 @@ import Link from 'next/link';
 import ErrorPage from 'next/error';
 import { getChapters } from '../../lib/get-json';
 import styles from '../../styles/Home.module.css'
+import { IconButton, Tooltip } from '@chakra-ui/react';
+import { ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons';
 
 export default function Chapter({ data = {} }) {
 
@@ -27,20 +29,17 @@ export default function Chapter({ data = {} }) {
   ))
 
   const prev = theContent.prev.link
-    ? <Link href={theContent.prev.link}><a title={theContent.prev.name} className={styles.nextprev}>&#8610;</a></Link>
-    : <Link href='#'><a title={theContent.prev.name} className={styles.nextprev}>&#8610;</a></Link>
+    ? <Link href={theContent.prev.link}><a className={styles.nextprev}><Tooltip label={theContent.prev.name}><IconButton icon={<ArrowBackIcon />} /></Tooltip></a></Link>
+    : <Link href='#'><a className={styles.nextprev}><Tooltip label={theContent.prev.name}><IconButton icon={<ArrowBackIcon />} /></Tooltip></a></Link>
   const next = theContent.next.link
-    ? <Link href={theContent.next.link}><a title={theContent.next.name} className={styles.nextprev}>&#8611;</a></Link>
-    : <Link href='#'><a title={theContent.next.name} className={styles.nextprev}>&#8611;</a></Link>
+    ? <Link href={theContent.next.link}><a className={styles.nextnext}><Tooltip label={theContent.next.name}><IconButton icon={<ArrowForwardIcon />} /></Tooltip></a></Link>
+    : <Link href='#'><a className={styles.nextprev}><Tooltip label={theContent.next.name}><IconButton icon={<ArrowForwardIcon />} /></Tooltip></a></Link>
 
   return <div className={styles.container}>
     <Head>
       <title>ESV: {theContent.bookName}: {theContent.verseName}</title>
       <meta name="description" content="The ESV translation" />
     </Head>
-    <div className={styles.topactions}>
-      <Link href='/'><a>Index</a></Link>
-    </div>
     <main className={styles.main}>
       <h2 className={styles.subtitle}>{theContent.bookName} {theContent.chapterName}</h2>
       <div className={styles.card}>

@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react';
 
 export default function Home({ data = {} }) {
 
-  const [isAllVisible, setAllVisible] = useState(false);
+  // const [isAllVisible, setAllVisible] = useState(false);
 
   const allBookChapters = data
   let currentBookName;
@@ -37,10 +37,6 @@ export default function Home({ data = {} }) {
         <title>The ESV Bible</title>
         <meta name="description" content="The ESV translation" />
       </Head>
-
-      <div className={styles.searchcontainer}>
-        <Link href='/search'><a>Search</a></Link>
-      </div>
 
       <main className={styles.main}>
         <h1 className={styles.title}>

@@ -3,6 +3,8 @@ import { Document } from 'flexsearch';
 import styles from './Search.module.css';
 import Link from 'next/link';
 import SearchIcon from './searchicon';
+import { IconButton, Input } from '@chakra-ui/react';
+import { CloseIcon } from '@chakra-ui/icons';
 
 export default function SearchComponent() {
 
@@ -30,7 +32,7 @@ export default function SearchComponent() {
           const uniqueWithVerse = `${unique}:${verseName}`;
           index.add({
             id: uniqueWithVerse,
-            content: text
+            content: uniqueWithVerse + text
           });
           window.searchEngineLookup[uniqueWithVerse] = text;
         }
@@ -66,19 +68,21 @@ export default function SearchComponent() {
     </li>
   });
 
-  const toggleSearch = (value) => {
-    setSearchOpen(value);
-    setSuggestions([]);
-  }
+  // const toggleSearch = (value) => {
+  //   setSearchOpen(value);
+  //   setSuggestions([]);
+  // }
 
-  const renderedSearch = searchOpen
-    ? (<><input type="text" autoFocus onChange={onSearchType} placeholder='Search Anything' />
-      <button onClick={() => toggleSearch(false)} className={styles.exicon}>x</button></>)
-    : <><span></span><button onClick={() => toggleSearch(true)} className={styles.searchicon}><SearchIcon /></button></>;
+  // const renderedSearch = searchOpen
+  //   ? (<><input type="text" autoFocus onChange={onSearchType} placeholder='Search Anything' />
+  //     <button onClick={() => toggleSearch(false)} className={styles.exicon}>x</button></>)
+  //   : <><span></span><button onClick={() => toggleSearch(true)} className={styles.searchicon}><SearchIcon /></button></>;
 
   return <>
     <div className={styles.searchwrapper}>
-      {renderedSearch}
+      {/* {renderedSearch} */}
+      <Input placeholder='Search Anything' onChange={onSearchType}/>
+      <IconButton icon={<CloseIcon />} onClick={() => setSuggestions([])} />
     </div>
     {suggestions.length > 0 && <ul className={styles.suggestions}>
       {renderedSuggestions}
