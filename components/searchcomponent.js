@@ -4,6 +4,7 @@ import styles from './Search.module.css';
 import Link from 'next/link';
 import { IconButton, Input, List, ListItem } from '@chakra-ui/react';
 import { CloseIcon } from '@chakra-ui/icons';
+import Highlighter from 'react-highlight-words';
 
 export default function SearchComponent({ renderedData }) {
 
@@ -13,7 +14,6 @@ export default function SearchComponent({ renderedData }) {
 
   useEffect(() => {
     // load the index on the client
-    // const rawData = window.__NEXT_DATA__?.props?.pageProps?.data;
     if (rawData) {
       // Check if the data isn't complete (clicked search from book landing page)
       if (rawData.unique) {
@@ -65,12 +65,21 @@ export default function SearchComponent({ renderedData }) {
     }
   }
 
+  const formatText = (text) => {
+    const searchArray = searchValue.trim().split(' ');
+    return <Highlighter
+      searchWords={searchArray}
+      autoEscape={true}
+      textToHighlight={text}
+    />
+  }
+
   const renderedSuggestions = suggestions?.map(({ key, text }) => {
     const unique = key.substring(0, key.indexOf(':'));
-    const url = `/read/${unique}`;
+    const url = `/read/${unique}?highlight=${searchValue}`;
     return <ListItem key={key}>
       <div><Link href={url}><a className={styles.suglink}>{key}</a></Link></div>
-      <p>{ text }</p>
+      <p>{ formatText(text) }</p>
     </ListItem>
   });
 

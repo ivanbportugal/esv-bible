@@ -6,11 +6,14 @@ import { getChapters, getChapter } from '../../lib/get-json';
 import styles from '../../styles/Home.module.css'
 import { IconButton, Tooltip } from '@chakra-ui/react';
 import { ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons';
+import Highlighter from 'react-highlight-words';
 
 export default function Chapter({ data = {} }) {
 
   const router = useRouter();
   // const theContent = getChapter(data, router.query.slug)
+
+  const highlightedText = router.query.highlight;
 
   const theContent = data;
   const slug = theContent?.unique;
@@ -22,10 +25,22 @@ export default function Chapter({ data = {} }) {
     return <ErrorPage statusCode={403} />
   }
 
+  const formatText = (text) => {
+    if (!highlightedText) {
+      return text;
+    }
+    const searchArray = highlightedText.trim().split(' ');
+    return <Highlighter
+      searchWords={searchArray}
+      autoEscape={true}
+      textToHighlight={text}
+    />
+  }
+
   const verses = theContent.verses.map((verse) => (
     <span key={verse.verseName}>
       <span className={styles.versenumber}> {verse.verseName} </span>
-      <span>{verse.text}</span>
+      <span>{formatText(verse.text)}</span>
     </span>
   ))
 
@@ -54,35 +69,9 @@ export default function Chapter({ data = {} }) {
   </div>
 }
 
-// const getChapter = (allBookChapters, bookChapter) => {
-//   // const allBookChapters = await getChapters();
-//   let foundIndex;
-//   const result = allBookChapters.find((value, index) => {
-//     foundIndex = index;
-//     return bookChapter === value.unique;
-//   });
-//   // prev and next
-//   const copy = {...result};
-//   copy.prev = (foundIndex > 0)
-//     ? cleanUpNextPrevLink(allBookChapters[foundIndex - 1])
-//     : { name: 'Did you even read the first verse?' };
-//   copy.next = (foundIndex < allBookChapters.length - 1)
-//     ? cleanUpNextPrevLink(allBookChapters[foundIndex + 1])
-//     : { name: 'God didn\'t add anything else, dude.' };
-//   return copy;
-// }
-
-// const cleanUpNextPrevLink = ({ bookName, chapterName, unique }) => {
-//   return {
-//     name: `${bookName} ${chapterName}`,
-//     link: `/read/${unique}`
-//   }
-// }
-
 // Need the params here to not get a 404
 export async function getStaticProps({ params }) {
   const allText = await getChapter(params.slug);
-  // const allText = await getChapters();
   return {
     props: {
       data: allText
