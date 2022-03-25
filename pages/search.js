@@ -3,7 +3,7 @@ import styles from '../styles/Search.module.css';
 import SearchComponent from '../components/searchcomponent';
 import { getChapters } from '../lib/get-json';
 
-export default function Search() {
+export default function Search({ data = {}}) {
 
   return (
     <div className={styles.container}>
@@ -12,7 +12,7 @@ export default function Search() {
         <meta name="description" content="The ESV translation, search" />
       </Head>
       <main className={styles.searchmain}>
-        <SearchComponent />
+        <SearchComponent renderedData={data} />
       </main>
     </div>
   )

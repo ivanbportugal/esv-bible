@@ -5,16 +5,21 @@ import Link from 'next/link';
 import { IconButton, Input, List, ListItem } from '@chakra-ui/react';
 import { CloseIcon } from '@chakra-ui/icons';
 
-export default function SearchComponent() {
+export default function SearchComponent({ renderedData }) {
 
   const [suggestions, setSuggestions] = useState([]);
   const [searchValue, setSearchValue] = useState('');
-  // const [searchOpen, setSearchOpen] = useState(false);
+  const [rawData, _] = useState(renderedData);
 
   useEffect(() => {
     // load the index on the client
-    const rawData = window.__NEXT_DATA__?.props?.pageProps?.data;
+    // const rawData = window.__NEXT_DATA__?.props?.pageProps?.data;
     if (rawData) {
+      // Check if the data isn't complete (clicked search from book landing page)
+      if (rawData.unique) {
+        // This is not the entire text, just a chaper. Let's reload the page and try again.
+        location.reload();
+      }
       const index = new Document({
         doc: {
           id: 'id',
