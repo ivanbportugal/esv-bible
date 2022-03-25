@@ -5,7 +5,7 @@
     "scope": "https://swrd.org",
     "start_url": "https://swrd.org",
     "name": "ESV Bible",
-    "short_name": "esv-bible",
+    "short_name": "ESV bible",
     "description": "ESV Translation of the Bible",
     "icons": [
         {

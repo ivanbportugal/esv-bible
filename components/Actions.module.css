@@ -1,0 +1,15 @@
+.actionswrapper {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: .7rem;
+  display: flex;
+}
+.actionswrapper > * {
+  margin-left: .7rem;
+}
+.actionswrapper .homeiconbutton svg {
+  width: 1rem;
+  height: 1rem;
+  fill: var(--chakra-colors-current);
+}

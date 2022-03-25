@@ -2,47 +2,62 @@ import { useRouter } from 'next/router';
 import Head from 'next/head';
 import Link from 'next/link';
 import ErrorPage from 'next/error';
-import { getChapter, getChapters } from '../../lib/get-json';
+import { getChapters, getChapter } from '../../lib/get-json';
 import styles from '../../styles/Home.module.css'
+import { IconButton, Tooltip } from '@chakra-ui/react';
+import { ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons';
+import Highlighter from 'react-highlight-words';
 
 export default function Chapter({ data = {} }) {
 
   const router = useRouter();
+  // const theContent = getChapter(data, router.query.slug)
 
-  const slug = data?.unique;
+  const highlightedText = router.query.highlight;
+
+  const theContent = data;
+  const slug = theContent?.unique;
   if (!router.isFallback && !slug) {
     return <ErrorPage statusCode={404} />
   }
 
-  if (!slug || !data.verses) {
+  if (!slug || !theContent.verses) {
     return <ErrorPage statusCode={403} />
   }
 
-  const verses = data.verses.map((verse) => (
+  const formatText = (text) => {
+    if (!highlightedText) {
+      return text;
+    }
+    const searchArray = highlightedText.trim().split(' ');
+    return <Highlighter
+      searchWords={searchArray}
+      autoEscape={true}
+      textToHighlight={text}
+    />
+  }
+
+  const verses = theContent.verses.map((verse) => (
     <span key={verse.verseName}>
       <span className={styles.versenumber}> {verse.verseName} </span>
-      <span>{verse.text}</span>
+      <span>{formatText(verse.text)}</span>
     </span>
   ))
 
-  const prev = data.prev.link
-    ? <Link href={data.prev.link}><a title={data.prev.name} className={styles.nextprev}>&#8610;</a></Link>
-    : <Link href='#'><a title={data.prev.name} className={styles.nextprev}>&#8610;</a></Link>
-  const next = data.next.link
-    ? <Link href={data.next.link}><a title={data.next.name} className={styles.nextprev}>&#8611;</a></Link>
-    : <Link href='#'><a title={data.next.name} className={styles.nextprev}>&#8611;</a></Link>
+  const prev = theContent.prev.link
+    ? <Link href={theContent.prev.link}><a className={styles.nextprev}><Tooltip label={theContent.prev.name}><IconButton icon={<ArrowBackIcon />} /></Tooltip></a></Link>
+    : <Link href='#'><a className={styles.nextprev}><Tooltip label={theContent.prev.name}><IconButton icon={<ArrowBackIcon />} /></Tooltip></a></Link>
+  const next = theContent.next.link
+    ? <Link href={theContent.next.link}><a className={styles.nextnext}><Tooltip label={theContent.next.name}><IconButton icon={<ArrowForwardIcon />} /></Tooltip></a></Link>
+    : <Link href='#'><a className={styles.nextprev}><Tooltip label={theContent.next.name}><IconButton icon={<ArrowForwardIcon />} /></Tooltip></a></Link>
 
   return <div className={styles.container}>
     <Head>
-      <title>ESV: {data.bookName}: {data.verseName}</title>
+      <title>ESV: {theContent.bookName}: {theContent.verseName}</title>
       <meta name="description" content="The ESV translation" />
-      <link rel="icon" href="/favicon.ico" />
     </Head>
-    <div className={styles.topactions}>
-      <Link href='/'><a>Index</a></Link>
-    </div>
     <main className={styles.main}>
-      <h2 className={styles.subtitle}>{data.bookName} {data.chapterName}</h2>
+      <h2 className={styles.subtitle}>{theContent.bookName} {theContent.chapterName}</h2>
       <div className={styles.card}>
         <p className={styles.description}>{verses}</p>
       </div>
@@ -54,6 +69,7 @@ export default function Chapter({ data = {} }) {
   </div>
 }
 
+// Need the params here to not get a 404
 export async function getStaticProps({ params }) {
   const allText = await getChapter(params.slug);
   return {

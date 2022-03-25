@@ -2,12 +2,8 @@ import Head from 'next/head';
 import Link from 'next/link';
 import styles from '../styles/Home.module.css';
 import { getChapters } from '../lib/get-json';
-import Search from '../components/search';
-import { useState, useEffect } from 'react';
 
 export default function Home({ data = {} }) {
-
-  const [isAllVisible, setAllVisible] = useState(false);
 
   const allBookChapters = data
   let currentBookName;
@@ -32,33 +28,12 @@ export default function Home({ data = {} }) {
     </li>
   });
 
-  const listenToScroll = () => {
-    // Show all the chapters once the user scrolls a little bit
-    let heightToShow = 300;
-    const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-
-    if (!isAllVisible && winScroll > heightToShow) {  
-      setAllVisible(true);
-    } 
-  }
-
-  useEffect(() => {   
-    window.addEventListener("scroll", listenToScroll);
-    return () => 
-       window.removeEventListener("scroll", listenToScroll); 
-  }, [])
-
   return (
     <div className={styles.container}>
       <Head>
         <title>The ESV Bible</title>
         <meta name="description" content="The ESV translation" />
-        <link rel="icon" href="/favicon.ico" />
       </Head>
-
-      <div className={styles.searchcontainer}>
-        <Search />
-      </div>
 
       <main className={styles.main}>
         <h1 className={styles.title}>
@@ -106,9 +81,9 @@ export default function Home({ data = {} }) {
 
         <hr />
 
-        {isAllVisible && <ul className={styles.homelist}>
+        <ul className={styles.homelist}>
           {listOfAll}
-        </ul>}
+        </ul>
 
       </main>
 
@@ -119,6 +94,7 @@ export default function Home({ data = {} }) {
   )
 }
 
+// Keep __NEXT_DATA__ hydrated with the text no matter which landing page
 export async function getStaticProps() {
   const allText = await getChapters();
   return {

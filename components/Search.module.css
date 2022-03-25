@@ -1,8 +1,8 @@
 .suggestions {
   border: 1px solid #0070f3;
-  background-color: #fff;
   padding: 1rem 1.5rem;
   border-radius: 1rem;
+  margin: 0 1rem;
 }
 
 .suglink {
@@ -22,11 +22,19 @@
 .searchwrapper {
   display: flex;
   justify-content: space-between;
-  max-width: 10rem;
+  margin: 0 auto 1rem;
+  width: 20rem;
+}
+
+.searchwrapper button {
+  margin-left: 1rem;
 }
 
 .searchwrapper input {
   border-radius: .4rem;
+}
+.searchwrapper p {
+  font-size: .5rem;
 }
 
 .searchsvg {
