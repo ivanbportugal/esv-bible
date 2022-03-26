@@ -11,8 +11,8 @@ import Highlighter from 'react-highlight-words';
 export default function Chapter({ data = {} }) {
 
   const router = useRouter();
-  // const theContent = getChapter(data, router.query.slug)
 
+  const highlightedVerse = router.query.verse;
   const highlightedText = router.query.highlight;
 
   const theContent = data;
@@ -25,22 +25,37 @@ export default function Chapter({ data = {} }) {
     return <ErrorPage statusCode={403} />
   }
 
-  const formatText = (text) => {
-    if (!highlightedText) {
+  const formatText = (text, verseName) => {
+    if (highlightedVerse) {
+      if (highlightedVerse == verseName) {
+        // Verse selected in route
+        return <Highlighter
+          searchWords={[text]}
+          autoEscape={true}
+          textToHighlight={text}
+        />
+      } else {
+        // Verse not found from route
+        return text;
+      }
+    } else if (highlightedText) {
+      // Highlight each word
+      const searchArray = highlightedText.trim().split(' ');
+      return <Highlighter
+        searchWords={searchArray}
+        autoEscape={true}
+        textToHighlight={text}
+      />
+    } else {
+      // No highlighted text at all
       return text;
     }
-    const searchArray = highlightedText.trim().split(' ');
-    return <Highlighter
-      searchWords={searchArray}
-      autoEscape={true}
-      textToHighlight={text}
-    />
   }
 
   const verses = theContent.verses.map((verse) => (
     <span key={verse.verseName}>
       <span className={styles.versenumber}> {verse.verseName} </span>
-      <span>{formatText(verse.text)}</span>
+      <span>{formatText(verse.text, verse.verseName)}</span>
     </span>
   ))
 
@@ -57,7 +72,7 @@ export default function Chapter({ data = {} }) {
       <meta name="description" content="The ESV translation" />
     </Head>
     <main className={styles.main}>
-      <h2 className={styles.subtitle}>{theContent.bookName} {theContent.chapterName}</h2>
+      <h2 className={styles.subtitle}>{formatText(theContent.bookName)} {formatText(theContent.chapterName)}</h2>
       <div className={styles.card}>
         <p className={styles.description}>{verses}</p>
       </div>

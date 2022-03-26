@@ -35,9 +35,10 @@ export default function SearchComponent({ renderedData }) {
         
         for (const { verseName, text } of bookChapter.verses) {
           const uniqueWithVerse = `${unique}:${verseName}`;
+          const textToIndex = `${bookChapter.bookName} ${bookChapter.chapterName}:${verseName} ${text}`;
           index.add({
             id: uniqueWithVerse,
-            content: uniqueWithVerse + text
+            content: textToIndex
           });
           window.searchEngineLookup[uniqueWithVerse] = text;
         }
@@ -78,7 +79,7 @@ export default function SearchComponent({ renderedData }) {
     const unique = key.substring(0, key.indexOf(':'));
     const url = `/read/${unique}?highlight=${searchValue}`;
     return <ListItem key={key}>
-      <div><Link href={url}><a className={styles.suglink}>{key}</a></Link></div>
+      <div><Link href={url}><a className={styles.suglink}>{formatText(key)}</a></Link></div>
       <p>{ formatText(text) }</p>
     </ListItem>
   });

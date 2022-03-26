@@ -1,6 +1,5 @@
 import { ColorModeScript } from "@chakra-ui/react";
 import { Html, Head, Main, NextScript } from "next/document";
-// import ActionsComponent from "../components/actions.component.js";
 import { prefix } from '../lib/prefix.js';
 import theme from '../components/theme';
 
@@ -18,7 +17,6 @@ function MyDocument() {
       </Head>
       <body>
         <ColorModeScript initialColorMode={theme.config.initialColorMode} />
-        
         <Main />
         <NextScript />
       </body>
