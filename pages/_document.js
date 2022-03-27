@@ -19,11 +19,11 @@ function MyDocument() {
 
         <meta name="apple-mobile-web-app-status-bar-style" content="black" />
 
-        <link rel="apple-touch-icon" sizes="152x152" href="apple-touch-icon-ipad.png" type="image/png" />
+        {/* <link rel="apple-touch-icon" sizes="152x152" href="apple-touch-icon-ipad.png" type="image/png" />
         <link rel="apple-touch-icon" sizes="167x167" href="apple-touch-icon-ipad-retina.png" type="image/png" />
         <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon-iphone-retina.png" type="image/png" />
 
-        <link rel="mask-icon" href="assets/images/icons/safari-pinned-tab.svg" color="#5bbad5" />
+        <link rel="mask-icon" href="assets/images/icons/safari-pinned-tab.svg" color="#5bbad5" /> */}
         {/* <meta name="theme-color" content="#fff" /> */}
       </Head>
       <body>
