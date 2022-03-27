@@ -58,8 +58,7 @@ export default function Chapter({ data = {} }) {
     try {
       if (navigator.share) {
         await navigator.share({
-          title: `Share verse ${verseName}`,
-          text: url,
+          text: `Share verse ${verseName}`,
           url: url,
         });
       } else if (navigator.clipboard) {
