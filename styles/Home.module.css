@@ -131,6 +131,7 @@
 .versenumber {
   font-weight: bold;
   color: #0070f3;
+  cursor: pointer;
 }
 
 .searchcontainer {

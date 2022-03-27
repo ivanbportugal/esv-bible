@@ -47,8 +47,8 @@ export default function ActionsComponent() {
     } catch (e) {
       console.log('Couldn\'t share the url', e);
       toast({
-        title: 'Could not grab URL.',
-        description: 'There was an error trying to get the URL on your clipboard. Please try again later...',
+        title: 'Could not grab URL to share',
+        description: 'There was an error trying to share or get the URL to your clipboard (you may have cancelled the operation).',
         status: 'error',
         duration: 5000,
         isClosable: true

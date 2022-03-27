@@ -4,13 +4,14 @@ import Link from 'next/link';
 import ErrorPage from 'next/error';
 import { getChapters, getChapter } from '../../lib/get-json';
 import styles from '../../styles/Home.module.css'
-import { IconButton, Tooltip } from '@chakra-ui/react';
+import { IconButton, Tooltip, useToast } from '@chakra-ui/react';
 import { ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons';
 import Highlighter from 'react-highlight-words';
 
 export default function Chapter({ data = {} }) {
 
   const router = useRouter();
+  const toast = useToast();
 
   const highlightedVerse = router.query.verse;
   const highlightedText = router.query.highlight;
@@ -52,9 +53,49 @@ export default function Chapter({ data = {} }) {
     }
   }
 
+  const shareVerse = async (verseName) => {
+    const url = `${window.origin}${router.basePath}/read/${slug}?verse=${verseName}`;
+    try {
+      if (navigator.share) {
+        await navigator.share({
+          title: `Share verse ${verseName}`,
+          text: url,
+          url: url,
+        });
+      } else if (navigator.clipboard) {
+        await navigator.clipboard.writeText(url)
+        toast({
+          title: 'Copied verse URL.',
+          description: '',
+          status: 'success',
+          duration: 5000,
+          isClosable: true
+        });
+      } else {
+        console.log('Couldn\'t share the url');
+        toast({
+          title: 'Could not grab URL.',
+          description: 'There was an error trying to get the URL on your clipboard. Please try again later...',
+          status: 'error',
+          duration: 5000,
+          isClosable: true
+        });
+      }
+    } catch (e) {
+      console.log('Couldn\'t share the url', e);
+      toast({
+        title: 'Could not grab URL to share',
+        description: 'There was an error trying to share or get the URL to your clipboard (you may have cancelled the operation).',
+        status: 'error',
+        duration: 5000,
+        isClosable: true
+      });
+    }
+  }
+
   const verses = theContent.verses.map((verse) => (
     <span key={verse.verseName}>
-      <span className={styles.versenumber}> {verse.verseName} </span>
+      <span onClick={() => shareVerse(verse.verseName)} className={styles.versenumber}> {verse.verseName} </span>
       <span>{formatText(verse.text, verse.verseName)}</span>
     </span>
   ))
