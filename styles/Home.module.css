@@ -1,21 +1,22 @@
 .container {
-  padding: 0 2rem;
+  padding: 0 2em;
 }
 
 .main {
   min-height: 100vh;
-  padding: 4rem 0;
+  padding: 4em 0;
   flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  font-size: 1em;
 }
 
 .footer {
   display: flex;
   flex: 1;
-  padding: 2rem 0;
+  padding: 2em 0;
   border-top: 1px solid #eaeaea;
   justify-content: center;
   align-items: center;
@@ -35,13 +36,13 @@
 .title {
   margin: 0;
   line-height: 1.15;
-  font-size: 3rem;
+  font-size: 3em;
 }
 
 .subtitle {
-  margin: 0 0 1rem 0;
+  margin: 0 0 1em 0;
   line-height: 1;
-  font-size: 2rem;
+  font-size: 2em;
 }
 
 .title,
@@ -50,16 +51,16 @@
 }
 
 .description {
-  margin: 4rem 0;
+  margin: 4em 0;
   line-height: 1.5;
-  font-size: 1.5rem;
+  font-size: 1em;
 }
 
 .code {
   background: #fafafa;
   border-radius: 5px;
-  padding: 0.75rem;
-  font-size: 1.1rem;
+  padding: 0.75em;
+  font-size: 1.1em;
   font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
     Bitstream Vera Sans Mono, Courier New, monospace;
 }
@@ -73,8 +74,8 @@
 }
 
 .card {
-  margin: 1rem;
-  padding: 1rem;
+  margin: 1em;
+  padding: 1em;
   text-align: left;
   color: inherit;
   text-decoration: none;
@@ -85,19 +86,19 @@
 }
 
 .card h2 {
-  margin: 0 0 1rem 0;
-  font-size: 1.5rem;
+  margin: 0 0 1em 0;
+  font-size: 1.5em;
 }
 
 .card p {
   margin: 0;
-  font-size: 1.25rem;
+  font-size: 1.25em;
   line-height: 1.5;
 }
 
 .logo {
   height: 1em;
-  margin-left: 0.5rem;
+  margin-left: 0.5em;
 }
 
 @media (max-width: 600px) {
@@ -114,17 +115,17 @@
 
 .booklist {
   font-weight: bold;
-  margin: 1rem 0;
+  margin: 1em 0;
   line-height: 1;
-  font-size: 1rem;
+  font-size: 1em;
   list-style: none;
   text-decoration: underline;
 }
 
 .chapterlist {
-  margin: 1rem 0;
+  margin: 1em 0;
   line-height: 1;
-  font-size: 1rem;
+  font-size: 1em;
   list-style: none;
 }
 
@@ -137,10 +138,10 @@
 .searchcontainer {
   position: fixed;
   line-height: 1;
-  font-size: 1rem;
+  font-size: 1em;
   top: 0;
   right: 0;
-  padding: 1rem;
+  padding: 1em;
   max-width: calc(100% - 100px);
   min-width: 250px;
 }
@@ -149,22 +150,32 @@
   position: fixed;
   display: flex;
   justify-content: space-between;
-  bottom: 1rem;
+  bottom: 1em;
   left: 0;
   right: 0;
-  margin: 0 1.5rem;
+  margin: 0 1.5em;
 }
 
 .nextprev {
-  padding: 0.1rem;
-  font-size: 2rem;
+  padding: 0.1em;
+  font-size: 2em;
 }
 
 .stylelinks li {
   list-style: none;
-  margin: .5rem 0 .5rem 1rem;
+  margin: .5em 0 .5em 1em;
 }
 .stylelinks a {
   color: #0070f3;
   text-decoration: underline;
+}
+
+/* smartphones, touchscreens */
+@media (hover: none) and (pointer: coarse) {
+  .container {
+    padding: 0 .2em;
+  }
+  .container {
+    font-size: 14px;
+  }
 }

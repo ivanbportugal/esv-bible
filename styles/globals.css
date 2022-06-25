@@ -19,3 +19,7 @@ hr {
   width: 100%;
   margin: 1rem 0 2rem;
 }
+
+button.chakra-button:focus {
+  box-shadow: none;
+}
