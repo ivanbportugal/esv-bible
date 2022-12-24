@@ -62,7 +62,7 @@ export default function Home({ data = {} }) {
               </li>
               <li>
                 <p style={{textDecoration: 'underline'}}>Which translations do you support</p>
-                <p>Only <a target='_blank' href='https://www.esv.org/'>ESV</a> for now.</p>
+                <p>Only <a target='_blank' rel="noreferrer" href='https://www.esv.org/'>ESV</a> for now.</p>
               </li>
               <li>
                 <p style={{textDecoration: 'underline'}}>I have a feature request and / or see a bug. (Or I just have more questions and comments)</p>
