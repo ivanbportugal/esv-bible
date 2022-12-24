@@ -1,30 +1,37 @@
 import Head from 'next/head';
 import Link from 'next/link';
 import styles from '../styles/Home.module.css';
-import { getChapters } from '../lib/get-json';
+import { getBooks } from '../lib/get-json';
 
 export default function Home({ data = {} }) {
 
   const allBookChapters = data
-  let currentBookName;
-  const allBooks = [];
-  const listOfAll = allBookChapters.map(({ bookName, chapterName, unique }) => {
-    const url = `/read/${unique}`;
-    if (!currentBookName || currentBookName !== bookName) {
-      currentBookName = bookName;
-      // link to each book, down the page
-      const anchor = `#${bookName}`;
-      allBooks.push(<li key={unique} className={styles.booklist}>
-        <a href={anchor}>{bookName}</a>
-      </li>);
-      // Goes to the ACTUAL text (but this is the anchor location)
-      return <li key={unique} id={bookName} className={styles.booklist}>
-        <Link href={url}><a>{bookName} {chapterName}</a></Link>
-      </li>
-    }
-    // Goes to the ACTUAL text (no anchor)
-    return <li key={unique} className={styles.chapterlist}>
-      <Link href={url}><a>{bookName} {chapterName}</a></Link>
+  // let currentBookName;
+  // const allBooks = [];
+  // const listOfAll = allBookChapters.map(({ bookName, chapterName, unique }) => {
+  //   const url = `/read/${unique}`;
+  //   if (!currentBookName || currentBookName !== bookName) {
+  //     currentBookName = bookName;
+  //     // link to each book, down the page
+  //     const anchor = `#${bookName}`;
+  //     allBooks.push(<li key={unique} className={styles.booklist}>
+  //       <a href={anchor}>{bookName}</a>
+  //     </li>);
+  //     // Goes to the ACTUAL text (but this is the anchor location)
+  //     return <li key={unique} id={bookName} className={styles.booklist}>
+  //       <Link href={url}><a>{bookName} {chapterName}</a></Link>
+  //     </li>
+  //   }
+  //   // Goes to the ACTUAL text (no anchor)
+  //   return <li key={unique} className={styles.chapterlist}>
+  //     <Link href={url}><a>{bookName} {chapterName}</a></Link>
+  //   </li>
+  // });
+
+  const renderBooks = allBookChapters.map(({ bookName }) => {
+    const url = `/book/${bookName}`;
+    return <li key={bookName} className={styles.chapterlist}>
+      <Link href={url}><a>{bookName}</a></Link>
     </li>
   });
 
@@ -76,14 +83,14 @@ export default function Home({ data = {} }) {
         <hr />
 
         <ul className={styles.homelist}>
-          {allBooks}
+          {renderBooks}
         </ul>
-
+{/* 
         <hr />
 
         <ul className={styles.homelist}>
           {listOfAll}
-        </ul>
+        </ul> */}
 
       </main>
 
@@ -96,7 +103,7 @@ export default function Home({ data = {} }) {
 
 // Keep __NEXT_DATA__ hydrated with the text no matter which landing page
 export async function getStaticProps() {
-  const allText = await getChapters();
+  const allText = await getBooks();
   return {
     props: {
       data: allText

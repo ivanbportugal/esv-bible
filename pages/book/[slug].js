@@ -11,7 +11,8 @@ export default function Book ({ data = {}}) {
     return <ErrorPage statusCode={403} />
   }
 
-  const listOfAll = theContent.verses.map(({ chapterName, unique }) => {
+  const listOfAll = theContent.verses.map(({ verseName }) => {
+    const unique = `${theContent.bookName}-${verseName}`;
     const url = `/read/${unique}`;
     // if (!currentBookName || currentBookName !== bookName) {
     //   currentBookName = bookName;
@@ -27,7 +28,7 @@ export default function Book ({ data = {}}) {
     // }
     // Goes to the ACTUAL text (no anchor)
     return <li key={unique} className={styles.chapterlist}>
-      <Link href={url}><a>{chapterName}</a></Link>
+      <Link href={url}><a>{verseName}</a></Link>
     </li>
   });
   
