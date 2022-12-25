@@ -4,10 +4,10 @@
   right: 0;
   margin: .7rem;
   display: flex;
-  flex-direction: column;
+  flex-direction: row-reverse;
 }
 .actionswrapper > * {
-  margin-bottom: .7rem;
+  margin-left: .7rem;
 }
 .actionswrapper .homeiconbutton svg {
   width: 1rem;

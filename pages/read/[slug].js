@@ -128,9 +128,9 @@ export async function getStaticProps({ params }) {
 }
 
 export async function getStaticPaths() {
-  const allBookChapters = await getChapters();
+  const { thebookchapters } = await getChapters();
   return {
-    paths: allBookChapters.map((bookChapter) => ({ params: { slug: bookChapter.unique } })),
+    paths: thebookchapters.map((bookChapter) => ({ params: { slug: bookChapter.unique } })),
     fallback: true
   }
 }

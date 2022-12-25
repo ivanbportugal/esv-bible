@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import Link from 'next/link';
 import styles from '../styles/Home.module.css';
-import { getBooks } from '../lib/get-json';
+import { getChapters } from '../lib/get-json';
 
 export default function Home({ data = {} }) {
 
@@ -85,12 +85,6 @@ export default function Home({ data = {} }) {
         <ul className={styles.homelist}>
           {renderBooks}
         </ul>
-{/* 
-        <hr />
-
-        <ul className={styles.homelist}>
-          {listOfAll}
-        </ul> */}
 
       </main>
 
@@ -103,10 +97,10 @@ export default function Home({ data = {} }) {
 
 // Keep __NEXT_DATA__ hydrated with the text no matter which landing page
 export async function getStaticProps() {
-  const allText = await getBooks();
+  const { thebooks } = await getChapters();
   return {
     props: {
-      data: allText
+      data: thebooks
     }
   }
 }

@@ -1,18 +1,18 @@
 import Head from 'next/head';
 import Link from 'next/link';
 import ErrorPage from 'next/error';
-import { getBook, getBooks } from '../../lib/get-json';
+import { getBook, getChapters } from '../../lib/get-json';
 import styles from '../../styles/Home.module.css'
 
 export default function Book ({ data = {}}) {
 
   const theContent = data;
-  if (!theContent.verses) {
+  if (!theContent.chapters) {
     return <ErrorPage statusCode={403} />
   }
 
-  const listOfAll = theContent.verses.map(({ verseName }) => {
-    const unique = `${theContent.bookName}-${verseName}`;
+  const listOfAll = theContent.chapters.map(({ chapterName }) => {
+    const unique = `${theContent.bookName}-${chapterName}`;
     const url = `/read/${unique}`;
     // if (!currentBookName || currentBookName !== bookName) {
     //   currentBookName = bookName;
@@ -28,7 +28,7 @@ export default function Book ({ data = {}}) {
     // }
     // Goes to the ACTUAL text (no anchor)
     return <li key={unique} className={styles.chapterlist}>
-      <Link href={url}><a>{verseName}</a></Link>
+      <Link href={url}><a>{chapterName}</a></Link>
     </li>
   });
   
@@ -70,9 +70,9 @@ export async function getStaticProps({ params }) {
 }
 
 export async function getStaticPaths() {
-  const allBooks = await getBooks();
+  const { thebooks } = await getChapters();
   return {
-    paths: allBooks.map((book) => ({ params: { slug: book.bookName } })),
+    paths: thebooks.map((book) => ({ params: { slug: book.bookName } })),
     fallback: true
   }
 }
