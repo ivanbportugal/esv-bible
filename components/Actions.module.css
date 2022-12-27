@@ -6,7 +6,7 @@
   display: flex;
   flex-direction: row-reverse;
 }
-.actionswrapper > * {
+.actionswrapperitem {
   margin-left: .7rem;
 }
 .actionswrapper .homeiconbutton svg {
