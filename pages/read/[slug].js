@@ -101,7 +101,7 @@ export default function Chapter({ data = {} }) {
 
   return <div className={styles.container}>
     <Head>
-      <title>ESV: {theContent.bookName}: {theContent.verseName}</title>
+      <title>ESV: {theContent.bookName} {theContent.chapterName}</title>
       <meta name="description" content="The ESV translation" />
     </Head>
     <main className={styles.main}>
