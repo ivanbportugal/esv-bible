@@ -77,9 +77,14 @@ export default function Home({ data = {} }) {
 // Keep __NEXT_DATA__ hydrated with the text no matter which landing page
 export async function getStaticProps() {
   const { thebooks } = await getChapters();
+  const onlyNames = thebooks.map(book => {
+    return {
+      bookName: book.bookName
+    }
+  })
   return {
     props: {
-      data: thebooks
+      data: onlyNames
     }
   }
 }
