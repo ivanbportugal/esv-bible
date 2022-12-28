@@ -9,6 +9,11 @@ const withPWA = require('next-pwa')({
 /** @type {import('next').NextConfig} */
 const nextConfig = 
   withPWA({
+    reactStrictMode: true,
+    dest: "public",
+		register: true,
+		skipWaiting: true,
+		buildExcludes: [/middleware-manifest.json$/]
     // reactStrictMode: true,
     // dest: process.env.NEXT_PUBLIC_BASE_PATH,
     // assetPrefix: process.env.NEXT_PUBLIC_BASE_PATH,
