@@ -6,27 +6,6 @@ import { getChapters } from '../lib/get-json';
 export default function Home({ data = {} }) {
 
   const allBookChapters = data
-  // let currentBookName;
-  // const allBooks = [];
-  // const listOfAll = allBookChapters.map(({ bookName, chapterName, unique }) => {
-  //   const url = `/read/${unique}`;
-  //   if (!currentBookName || currentBookName !== bookName) {
-  //     currentBookName = bookName;
-  //     // link to each book, down the page
-  //     const anchor = `#${bookName}`;
-  //     allBooks.push(<li key={unique} className={styles.booklist}>
-  //       <a href={anchor}>{bookName}</a>
-  //     </li>);
-  //     // Goes to the ACTUAL text (but this is the anchor location)
-  //     return <li key={unique} id={bookName} className={styles.booklist}>
-  //       <Link href={url}><a>{bookName} {chapterName}</a></Link>
-  //     </li>
-  //   }
-  //   // Goes to the ACTUAL text (no anchor)
-  //   return <li key={unique} className={styles.chapterlist}>
-  //     <Link href={url}><a>{bookName} {chapterName}</a></Link>
-  //   </li>
-  // });
 
   const renderBooks = allBookChapters.map(({ bookName }) => {
     const url = `/book/${bookName}`;

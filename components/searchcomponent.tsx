@@ -5,12 +5,16 @@ import Link from 'next/link';
 import { IconButton, Input, List, ListItem } from '@chakra-ui/react';
 import { CloseIcon } from '@chakra-ui/icons';
 import Highlighter from 'react-highlight-words';
+import { indexText } from '../lib/index-gen';
 
 export default function SearchComponent({ renderedData }) {
 
   const [suggestions, setSuggestions] = useState([]);
   const [searchValue, setSearchValue] = useState('');
   const [rawData, _] = useState(renderedData);
+
+  const [searchEngine, setSearchEngine] = useState<any>();
+  const [theSearchEngineLookup, setTheSearchEngineLookup] = useState();
 
   useEffect(() => {
     // load the index on the client
@@ -20,31 +24,10 @@ export default function SearchComponent({ renderedData }) {
         // This is not the entire text, just a chaper. Let's reload the page and try again.
         location.reload();
       }
-      const index = new Document({
-        doc: {
-          id: 'id',
-          field: ['content']
-        }
-      });
-      window.searchEngine = index;
-      window.searchEngineLookup = {};
-      // add each to index
-      const bookchapters = rawData.thebookchapters;
-      const totalCount = bookchapters.length;
-      for (const bookChapter of bookchapters) {
-        const unique = bookChapter.unique;
-        
-        for (const { verseName, text } of bookChapter.verses) {
-          const uniqueWithVerse = `${unique}:${verseName}`;
-          const textToIndex = `${bookChapter.bookName} ${bookChapter.chapterName}:${verseName} ${text}`;
-          index.add({
-            id: uniqueWithVerse,
-            content: textToIndex
-          });
-          window.searchEngineLookup[uniqueWithVerse] = text;
-        }
-      }
-      console.log(`Finished indexing all ${totalCount} chapters`);
+      const theData = (rawData.thebookchapters) ? rawData.thebookchapters : rawData;
+      const { index, searchEngineLookup } = indexText(theData);
+      setSearchEngine(index);
+      setTheSearchEngineLookup(searchEngineLookup as any);
     }
 
     // Now set the state for the rendering
@@ -52,16 +35,16 @@ export default function SearchComponent({ renderedData }) {
 
   function onSearchType(event) {
     setSearchValue(event.target.value)
-    if (window.searchEngine) {
+    if (searchEngine && theSearchEngineLookup) {
       setSuggestions([]);
       const term = event.target.value;
-      const results = window.searchEngine.search(term, { limit: 20, enrich: true, suggest: true });
+      const results = searchEngine.search(term, { limit: 20, enrich: true, suggest: true });
 
       if (results && results.length > 0) {
         const resultset = results[0];
         const finalset = resultset.result;
         // This should be an array of strings, let's make it into a map
-        const finalLookup = finalset.map((theKey) => ({ key: theKey, text: window.searchEngineLookup[theKey] }));
+        const finalLookup = finalset.map((theKey) => ({ key: theKey, text: theSearchEngineLookup[theKey] }));
         setSuggestions(finalLookup);
       }
     }
@@ -93,7 +76,7 @@ export default function SearchComponent({ renderedData }) {
   return <>
     <div className={styles.searchwrapper}>
       <Input value={searchValue} placeholder='Search Anything' onChange={onSearchType} />
-      <IconButton icon={<CloseIcon />} onClick={() => onCloseClicked()} />
+      <IconButton aria-label='Cancel' icon={<CloseIcon />} onClick={() => onCloseClicked()} />
     </div>
     {suggestions.length > 0 && <List spacing={3} className={styles.suggestions}>
       {renderedSuggestions}
