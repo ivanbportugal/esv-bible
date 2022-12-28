@@ -29,8 +29,9 @@ export default function SearchComponent({ renderedData }) {
       window.searchEngine = index;
       window.searchEngineLookup = {};
       // add each to index
-      const totalCount = rawData.length;
-      for (const bookChapter of rawData) {
+      const bookchapters = rawData.thebookchapters;
+      const totalCount = bookchapters.length;
+      for (const bookChapter of bookchapters) {
         const unique = bookChapter.unique;
         
         for (const { verseName, text } of bookChapter.verses) {
