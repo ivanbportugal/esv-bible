@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { IconButton, useColorMode, useToast } from '@chakra-ui/react';
-import { MoonIcon, Search2Icon, SunIcon, CopyIcon } from '@chakra-ui/icons';
+import { IconButton, useColorMode, useToast, SlideFade } from '@chakra-ui/react';
+import { MoonIcon, Search2Icon, SunIcon, CopyIcon, HamburgerIcon } from '@chakra-ui/icons';
 import HomeIcon from './homeicon';
 import styles from './Actions.module.css';
 
@@ -10,9 +10,11 @@ export default function ActionsComponent() {
   const { colorMode, toggleColorMode } = useColorMode();
   const toast = useToast();
 
+  const [isOpen, setOpen] = useState(false);
+
   const colorIcon = (colorMode === 'light') 
-    ? <IconButton size='sm' aria-label='Toggle Dark Mode' icon={<SunIcon />} onClick={toggleColorMode} />
-    : <IconButton size='sm' aria-label='Toggle Dark Mode' icon={<MoonIcon />} onClick={toggleColorMode} />
+    ? <IconButton className={styles.actionswrapperitem} size='sm' aria-label='Toggle Dark Mode' icon={<SunIcon />} onClick={toggleColorMode} />
+    : <IconButton className={styles.actionswrapperitem} size='sm' aria-label='Toggle Dark Mode' icon={<MoonIcon />} onClick={toggleColorMode} />
 
   const onCopyClicked = async () => {
 
@@ -56,20 +58,29 @@ export default function ActionsComponent() {
     }
   }
 
+  const renderMenu = () => {
+    return (<>
+      <SlideFade in={isOpen} className={styles.actionswrapperitemsparent}>
+        <Link href='/'>
+          <a>
+            <IconButton className={`${styles.actionswrapperitem} ${styles.homeiconbutton}`} size='sm' aria-label='Home' icon={<HomeIcon />} />
+          </a>
+        </Link>
+        <Link href='/search'>
+          <a>
+            <IconButton className={styles.actionswrapperitem} size='sm' aria-label='Search' icon={<Search2Icon />} />
+          </a>
+        </Link>
+        {colorIcon}
+        <IconButton className={styles.actionswrapperitem} size='sm' aria-label='Copy URL' onClick={onCopyClicked} icon={<CopyIcon />} />
+      </SlideFade>
+    </>)
+  }
+
   return (
-    <div className={styles.actionswrapper}>
-      <Link href='/'>
-        <a>
-          <IconButton size='sm' className={styles.homeiconbutton} aria-label='Home' icon={<HomeIcon />} />
-        </a>
-      </Link>
-      <Link href='/search'>
-        <a>
-          <IconButton size='sm' aria-label='Search' icon={<Search2Icon />} />
-        </a>
-      </Link>
-      {colorIcon}
-      <IconButton size='sm' aria-label='Copy URL' onClick={onCopyClicked} icon={<CopyIcon />} />
+    <div className={styles.actionswrapper} >
+      <IconButton className={styles.actionswrapperitem} size='sm' aria-label='Hamburger' icon={<HamburgerIcon />} onClick={() => setOpen(!isOpen)} />
+      {renderMenu()}
     </div>
-  )
+  );
 }
