@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build:local": "NEXT_PUBLIC_BASE_PATH=/esv-bible next build && next export",
-    "build": "next build && next export",
+    "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "test": "jest"
