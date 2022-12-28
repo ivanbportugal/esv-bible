@@ -24,7 +24,8 @@ export default function SearchComponent({ renderedData }) {
         // This is not the entire text, just a chaper. Let's reload the page and try again.
         location.reload();
       }
-      const { index, searchEngineLookup } = indexText(rawData);
+      const theData = (rawData.thebookchapters) ? rawData.thebookchapters : rawData;
+      const { index, searchEngineLookup } = indexText(theData);
       setSearchEngine(index);
       setTheSearchEngineLookup(searchEngineLookup as any);
     }
