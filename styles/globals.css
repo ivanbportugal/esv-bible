@@ -23,3 +23,7 @@ hr {
 button.chakra-button:focus {
   box-shadow: none;
 }
+
+a, .chakra-button {
+  -webkit-tap-highlight-color: transparent;
+}
