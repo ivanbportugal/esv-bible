@@ -2,7 +2,6 @@
   "theme_color": "#6987f9",
   "background_color": "#dededb",
   "display": "standalone",
-  "scope": "https://swrd.org",
   "start_url": "/",
   "name": "ESV Bible",
   "short_name": "ESV bible",
