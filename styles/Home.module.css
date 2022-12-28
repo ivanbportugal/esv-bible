@@ -133,6 +133,7 @@
   font-weight: bold;
   color: #0070f3;
   cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .searchcontainer {
