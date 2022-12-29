@@ -1,7 +1,7 @@
 console.log(`Using basePath: ${process.env.NEXT_PUBLIC_BASE_PATH}`);
 
 const withPWA = require('next-pwa')({
-  dest: process.env.NEXT_PUBLIC_BASE_PATH,
+  dest: 'public',
   // disable: process.env.NODE_ENV === "development"
 })
 
@@ -9,11 +9,11 @@ const withPWA = require('next-pwa')({
 /** @type {import('next').NextConfig} */
 const nextConfig = 
   withPWA({
-    reactStrictMode: true,
-    dest: "public",
-		register: true,
-		skipWaiting: true,
-		buildExcludes: [/middleware-manifest.json$/]
+    // reactStrictMode: true,
+    // dest: "public",
+		// register: true,
+		// skipWaiting: true,
+		// buildExcludes: [/middleware-manifest.json$/]
     // reactStrictMode: true,
     // dest: process.env.NEXT_PUBLIC_BASE_PATH,
     // assetPrefix: process.env.NEXT_PUBLIC_BASE_PATH,
