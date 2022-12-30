@@ -1,11 +1,11 @@
 import { useRouter } from 'next/router';
 import Head from 'next/head';
-import Link from 'next/link';
+import NextLink from 'next/link';
 import ErrorPage from 'next/error';
 import { getChapters, getChapter } from '../../lib/get-json';
 import styles from '../../styles/Home.module.css'
-import { IconButton, Tooltip, useToast } from '@chakra-ui/react';
-import { ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons';
+import { Button, IconButton, Link, Tooltip, useToast } from '@chakra-ui/react';
+import { ArrowBackIcon, ArrowForwardIcon, ArrowLeftIcon, ChevronLeftIcon } from '@chakra-ui/icons';
 import Highlighter from 'react-highlight-words';
 
 export default function Chapter({ data = {} }) {
@@ -14,9 +14,9 @@ export default function Chapter({ data = {} }) {
   const toast = useToast();
 
   const highlightedVerse = router.query.verse;
-  const highlightedText = router.query.highlight;
+  const highlightedText = router.query.highlight as string;
 
-  const theContent = data;
+  const theContent = data as any;
   const slug = theContent?.unique;
   if (!router.isFallback && !slug) {
     return <ErrorPage statusCode={404} />
@@ -26,7 +26,7 @@ export default function Chapter({ data = {} }) {
     return <ErrorPage statusCode={403} />
   }
 
-  const formatText = (text, verseName) => {
+  const formatText = (text: string, verseName?: string) => {
     if (highlightedVerse) {
       if (highlightedVerse == verseName) {
         // Verse selected in route
@@ -93,17 +93,22 @@ export default function Chapter({ data = {} }) {
   ))
 
   const prev = theContent.prev.link
-    ? <Link href={theContent.prev.link}><a className={styles.nextprev}><Tooltip label={theContent.prev.name}><IconButton icon={<ArrowBackIcon />} /></Tooltip></a></Link>
-    : <Link href='#'><a className={styles.nextprev}><Tooltip label={theContent.prev.name}><IconButton icon={<ArrowBackIcon />} /></Tooltip></a></Link>
+    ? <Link as={NextLink} passHref href={theContent.prev.link}><a className={styles.nextprev}><Tooltip label={theContent.prev.name}><IconButton aria-label='Previous' icon={<ArrowBackIcon />} /></Tooltip></a></Link>
+    : <Link as={NextLink} passHref href='#'><a className={styles.nextprev}><Tooltip label={theContent.prev.name}><IconButton aria-label='Previous' icon={<ArrowBackIcon />} /></Tooltip></a></Link>
   const next = theContent.next.link
-    ? <Link href={theContent.next.link}><a className={styles.nextnext}><Tooltip label={theContent.next.name}><IconButton icon={<ArrowForwardIcon />} /></Tooltip></a></Link>
-    : <Link href='#'><a className={styles.nextprev}><Tooltip label={theContent.next.name}><IconButton icon={<ArrowForwardIcon />} /></Tooltip></a></Link>
+    ? <Link as={NextLink} passHref href={theContent.next.link}><a className={styles.nextnext}><Tooltip label={theContent.next.name}><IconButton aria-label='Next' icon={<ArrowForwardIcon />} /></Tooltip></a></Link>
+    : <Link as={NextLink} passHref href='#'><a className={styles.nextprev}><Tooltip label={theContent.next.name}><IconButton aria-label='Next' icon={<ArrowForwardIcon />} /></Tooltip></a></Link>
 
   return <div className={styles.container}>
     <Head>
       <title>ESV: {theContent.bookName} {theContent.chapterName}</title>
       <meta name="description" content="The ESV translation" />
     </Head>
+    <Button leftIcon={<ArrowLeftIcon />} className={styles.bookindexbutton} size='sm'>
+      <Link as={NextLink} href={`/book/${theContent.bookName}`} passHref>
+        {theContent.bookName}
+      </Link>
+    </Button>
     <main className={styles.main}>
       <h2 className={styles.subtitle}>{formatText(theContent.bookName)} {formatText(theContent.chapterName)}</h2>
       <div className={styles.card}>
