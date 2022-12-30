@@ -125,6 +125,10 @@
   cursor: pointer;
 }
 
+.bookindexbutton {
+  margin: .75rem .6rem;
+}
+
 .chapterlist {
   margin: 1em 0;
   line-height: 1;
