@@ -111,15 +111,17 @@
 .homelist {
   width: calc(100% - 100px);
   margin-left: calc(10% - 15px);
+  margin-top: 20px;
 }
 
-.booklist {
+.booklist a {
   font-weight: bold;
-  margin: 1em 0;
+  margin: auto 1rem !important;
   line-height: 1;
-  font-size: 1em;
   list-style: none;
   text-decoration: underline;
+  cursor: pointer;
+
 }
 
 .chapterlist {

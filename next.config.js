@@ -2,7 +2,7 @@ console.log(`Using basePath: ${process.env.NEXT_PUBLIC_BASE_PATH}`);
 
 const withPWA = require('next-pwa')({
   dest: 'public',
-  // disable: process.env.NODE_ENV === "development"
+  disable: process.env.NODE_ENV === "development"
 })
 
 
@@ -21,7 +21,7 @@ const nextConfig =
     //   dest: "public",
     //   // register: true,
     //   // skipWaiting: true,
-    //   disable: process.env.NODE_ENV === "development",
+      // disable: process.env.NODE_ENV === "development",
     // },
   })
 
