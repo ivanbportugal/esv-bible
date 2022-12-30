@@ -120,8 +120,9 @@
   line-height: 1;
   list-style: none;
   text-decoration: underline;
+}
+.booklist :global .chakra-avatar {
   cursor: pointer;
-
 }
 
 .chapterlist {

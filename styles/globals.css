@@ -24,6 +24,6 @@ button.chakra-button:focus {
   box-shadow: none;
 }
 
-a, .chakra-button {
+a, .chakra-button, .chakra-popover__popper, .chakra-popover__content {
   -webkit-tap-highlight-color: transparent;
 }

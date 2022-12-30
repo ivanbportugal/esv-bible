@@ -3,6 +3,7 @@ import NextLink from 'next/link'
 import { Avatar, Link, List, ListItem, Popover, PopoverArrow, PopoverBody, PopoverCloseButton, PopoverContent, PopoverHeader, PopoverTrigger, Wrap } from '@chakra-ui/react'
 import styles from '../styles/Home.module.css';
 import { getChapters } from '../lib/get-json';
+import { getBookMap } from '../lib/get-book-descriptions';
 
 export default function Home({ data = {} }) {
 
@@ -10,18 +11,19 @@ export default function Home({ data = {} }) {
 
   const renderBooks = allBookChapters.map(({ bookName }) => {
     const url = `/book/${bookName}`;
-    return <ListItem key={bookName} >
+    const bookMeta = getBookMap(bookName);
+    return <ListItem key={bookName}>
       <Wrap className={styles.booklist}>
         <Popover>
           <PopoverTrigger>
-            <Avatar name={bookName} />
+            <Avatar name={bookMeta.category} />
           </PopoverTrigger>
           <PopoverContent>
             <PopoverArrow />
             <PopoverCloseButton />
-            <PopoverHeader fontWeight='semibold'>Pent</PopoverHeader>
+            <PopoverHeader fontWeight='semibold'>{bookMeta.category}</PopoverHeader>
             <PopoverBody>
-              Just a description
+              {bookMeta.author} - {bookMeta.date}
             </PopoverBody>
           </PopoverContent>
           <Link as={NextLink} href={url} passHref>
@@ -80,9 +82,7 @@ export default function Home({ data = {} }) {
         <hr />
 
         <List spacing={5} className={styles.homelist}>
-        {/* <ul className={styles.homelist}> */}
           {renderBooks}
-        {/* </ul> */}
         </List>
 
       </main>

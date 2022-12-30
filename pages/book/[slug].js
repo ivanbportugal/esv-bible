@@ -1,6 +1,7 @@
 import Head from 'next/head';
-import Link from 'next/link';
+import NextLink from 'next/link'
 import ErrorPage from 'next/error';
+import { Link, ListItem, List } from '@chakra-ui/react';
 import { getBook, getChapters } from '../../lib/get-json';
 import styles from '../../styles/Home.module.css'
 
@@ -14,22 +15,12 @@ export default function Book ({ data = {}}) {
   const listOfAll = theContent.chapters.map(({ chapterName }) => {
     const unique = `${theContent.bookName}-${chapterName}`;
     const url = `/read/${unique}`;
-    // if (!currentBookName || currentBookName !== bookName) {
-    //   currentBookName = bookName;
-      // link to each book, down the page
-      // const anchor = `#${bookName}`;
-      // allBooks.push(<li key={unique} className={styles.booklist}>
-      //   <a href={anchor}>{bookName}</a>
-      // </li>);
-      // // Goes to the ACTUAL text (but this is the anchor location)
-      // return <li key={unique} id={bookName} className={styles.booklist}>
-      //   <Link href={url}><a>{bookName} {chapterName}</a></Link>
-      // </li>
-    // }
-    // Goes to the ACTUAL text (no anchor)
-    return <li key={unique} className={styles.chapterlist}>
-      <Link href={url}><a>{chapterName}</a></Link>
-    </li>
+
+    return <ListItem key={chapterName} className={styles.booklist}>
+        <Link as={NextLink} href={url} passHref>
+          {chapterName}
+        </Link>
+      </ListItem>
   });
   
   return (
@@ -46,9 +37,9 @@ export default function Book ({ data = {}}) {
 
         <hr />
 
-        <ul className={styles.homelist}>
+        <List spacing={3} className={styles.homelist}>
           {listOfAll}
-        </ul>
+        </List>
 
       </main>
 
