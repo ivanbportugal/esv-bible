@@ -5,8 +5,10 @@ import ErrorPage from 'next/error';
 import { getChapters, getChapter } from '../../lib/get-json';
 import styles from '../../styles/Home.module.css'
 import { Button, IconButton, Link, Tooltip, useToast } from '@chakra-ui/react';
-import { ArrowBackIcon, ArrowForwardIcon, ArrowLeftIcon, ChevronLeftIcon } from '@chakra-ui/icons';
+import { ArrowBackIcon, ArrowForwardIcon, ArrowLeftIcon } from '@chakra-ui/icons';
 import Highlighter from 'react-highlight-words';
+import { setLastVisited } from '../../lib/local-data';
+import { useEffect } from 'react';
 
 export default function Chapter({ data = {} }) {
 
@@ -18,6 +20,11 @@ export default function Chapter({ data = {} }) {
 
   const theContent = data as any;
   const slug = theContent?.unique;
+
+  useEffect(() => {
+    setLastVisited(router.asPath);
+  }, [router]);
+
   if (!router.isFallback && !slug) {
     return <ErrorPage statusCode={404} />
   }

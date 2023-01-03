@@ -31,7 +31,7 @@ export default function SearchComponent({ renderedData }) {
     }
 
     // Now set the state for the rendering
-  }, []);
+  }, [rawData]);
 
   function onSearchType(event) {
     setSearchValue(event.target.value)
@@ -72,6 +72,21 @@ export default function SearchComponent({ renderedData }) {
     setSuggestions([]);
     setSearchValue('');
   }
+
+  // Escape key
+  useEffect(() => {
+    const keyDownHandler = (e) => {
+      if (e.code === 'Escape') {
+        onCloseClicked();
+      }
+    }
+    document.addEventListener("keydown", keyDownHandler);
+
+    // clean up
+    return () => {
+      document.removeEventListener("keydown", keyDownHandler);
+    };
+  }, []);
 
   return <>
     <div className={styles.searchwrapper}>

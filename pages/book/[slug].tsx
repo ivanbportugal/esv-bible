@@ -4,10 +4,19 @@ import ErrorPage from 'next/error';
 import { Link, ListItem, List } from '@chakra-ui/react';
 import { getBook, getChapters } from '../../lib/get-json';
 import styles from '../../styles/Home.module.css'
+import { useRouter } from 'next/router';
+import { setLastVisited } from '../../lib/local-data';
+import { useEffect } from 'react';
 
 export default function Book ({ data = {}}) {
 
-  const theContent = data;
+  const router = useRouter();
+
+  useEffect(() => {
+    setLastVisited(router.asPath);
+  }, [router]);
+
+  const theContent = data as any;
   if (!theContent.chapters) {
     return <ErrorPage statusCode={403} />
   }
