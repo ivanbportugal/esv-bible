@@ -73,6 +73,21 @@ export default function SearchComponent({ renderedData }) {
     setSearchValue('');
   }
 
+  // Escape key
+  useEffect(() => {
+    const keyDownHandler = (e) => {
+      if (e.code === 'Escape') {
+        onCloseClicked();
+      }
+    }
+    document.addEventListener("keydown", keyDownHandler);
+
+    // clean up
+    return () => {
+      document.removeEventListener("keydown", keyDownHandler);
+    };
+  }, []);
+
   return <>
     <div className={styles.searchwrapper}>
       <Input value={searchValue} placeholder='Search Anything' onChange={onSearchType} />

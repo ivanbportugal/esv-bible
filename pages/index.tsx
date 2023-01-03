@@ -1,13 +1,18 @@
 import Head from 'next/head';
 import NextLink from 'next/link'
-import { Avatar, Link, List, ListItem, Popover, PopoverArrow, PopoverBody, PopoverCloseButton, PopoverContent, PopoverHeader, PopoverTrigger, Wrap } from '@chakra-ui/react'
+import { Avatar, Box, Button, Link, List, ListItem, Popover, PopoverArrow, PopoverBody, PopoverCloseButton, PopoverContent, PopoverHeader, PopoverTrigger, Text, useToast, Wrap } from '@chakra-ui/react'
 import styles from '../styles/Home.module.css';
 import { getChapters } from '../lib/get-json';
 import { getBookMap } from '../lib/get-book-descriptions';
+import { getLastVisited } from '../lib/local-data';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
 export default function Home({ data = {} }) {
 
   const allBookChapters: Array<any> = data as any;
+  const toast = useToast();
+  const router = useRouter();
 
   const renderBooks = allBookChapters.map(({ bookName }) => {
     const url = `/book/${bookName}`;
@@ -33,6 +38,36 @@ export default function Home({ data = {} }) {
       </Wrap>
     </ListItem>
   });
+
+  const checkLastVisited = async () => {
+    const lastVisited = await getLastVisited();
+    if (lastVisited) {
+      toast({
+        // title: 'Pick up where you left off?',
+        // description: `(${lastVisited})`,
+        status: 'info',
+        duration: 5000,
+        isClosable: true,
+        position: 'bottom-right',
+        render: () => (
+          <Box color='white' p={3} bg='blue.500'>
+            <Text fontSize='md'>Pick up where you left off?</Text>
+            <Text fontSize='sm'>({lastVisited})</Text>
+            <Button size='sm' onClick={() => {
+              router.push(lastVisited)
+              toast.closeAll();
+            }}>
+              Let's Go!
+            </Button>
+          </Box>
+        ),
+      })
+    }
+  }
+
+  useEffect(() => {
+    checkLastVisited();
+  }, []);
 
   return (
     <div className={styles.container}>

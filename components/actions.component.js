@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { IconButton, useColorMode, useToast, SlideFade } from '@chakra-ui/react';
 import { MoonIcon, Search2Icon, SunIcon, CopyIcon, HamburgerIcon } from '@chakra-ui/icons';

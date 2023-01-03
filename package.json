@@ -19,6 +19,7 @@
     "@emotion/styled": "^11.8.1",
     "flexsearch": "^0.7.31",
     "framer-motion": "^6.2.8",
+    "localforage": "^1.10.0",
     "next": "12.2.0",
     "react": "18",
     "react-dom": "18",
