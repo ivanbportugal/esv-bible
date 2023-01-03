@@ -39,35 +39,28 @@ export default function Home({ data = {} }) {
     </ListItem>
   });
 
-  const checkLastVisited = async () => {
-    const lastVisited = await getLastVisited();
-    if (lastVisited) {
-      toast({
-        // title: 'Pick up where you left off?',
-        // description: `(${lastVisited})`,
-        status: 'info',
-        duration: 5000,
-        isClosable: true,
-        position: 'bottom-right',
-        render: () => (
-          <Box color='white' p={3} bg='blue.500'>
-            <Text fontSize='md'>Pick up where you left off?</Text>
-            <Text fontSize='sm'>({lastVisited})</Text>
-            <Button size='sm' onClick={() => {
-              router.push(lastVisited)
-              toast.closeAll();
-            }}>
-              Let's Go!
-            </Button>
-          </Box>
-        ),
-      })
-    }
-  }
-
   useEffect(() => {
-    checkLastVisited();
-  }, []);
+    getLastVisited().then(lastVisited => {
+      if (lastVisited) {
+        toast({
+          status: 'info',
+          duration: 3000,
+          isClosable: true,
+          position: 'bottom-right',
+          render: () => (
+            <Box color='white' p={3} bg='blue.500'>
+              <Text fontSize='md'>Pick up where you left off?</Text>
+              <Text fontSize='sm'>({lastVisited})</Text>
+              <Button size='sm' onClick={() => {
+                router.push(lastVisited);
+                toast.closeAll();
+              }}>{'Let\'s Go!'}</Button>
+            </Box>
+          ),
+        })
+      }
+    })
+  }, [router, toast]);
 
   return (
     <div className={styles.container}>

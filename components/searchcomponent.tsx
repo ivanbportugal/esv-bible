@@ -31,7 +31,7 @@ export default function SearchComponent({ renderedData }) {
     }
 
     // Now set the state for the rendering
-  }, []);
+  }, [rawData]);
 
   function onSearchType(event) {
     setSearchValue(event.target.value)
