@@ -4,11 +4,11 @@ import NextLink from 'next/link';
 import ErrorPage from 'next/error';
 import { getChapters, getChapter } from '../../lib/get-json';
 import styles from '../../styles/Home.module.css'
-import { Button, IconButton, Link, Tooltip, useToast } from '@chakra-ui/react';
+import { Box, Button, IconButton, Link, Text, Tooltip, useToast } from '@chakra-ui/react';
 import { ArrowBackIcon, ArrowForwardIcon, ArrowLeftIcon } from '@chakra-ui/icons';
 import Highlighter from 'react-highlight-words';
 import { setLastVisited } from '../../lib/local-data';
-import { useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 /**
  * Responsible for rendering an entire chapter
@@ -20,6 +20,7 @@ export default function Chapter({ data = {} }) {
 
   const router = useRouter();
   const toast = useToast();
+  const toastIdRef = useRef<any>();
 
   // Possible query params for highlighting
   const highlightedVerse = router.query.verse as string;
@@ -27,6 +28,8 @@ export default function Chapter({ data = {} }) {
 
   const theContent = data as any;
   const slug = theContent?.unique;
+
+  const [versesAboutToShare, setVersesAboutToShare] = useState([]);
 
   useEffect(() => {
     setLastVisited(router.asPath);
@@ -79,13 +82,13 @@ export default function Chapter({ data = {} }) {
     try {
       if (navigator.share) {
         await navigator.share({
-          text: `Share verse ${verseName}`,
+          text: `Share verse(s) ${verseName}`,
           url: url,
         });
       } else if (navigator.clipboard) {
         await navigator.clipboard.writeText(url)
         toast({
-          title: 'Copied verse URL.',
+          title: 'Copied verse(s) URL.',
           description: '',
           status: 'success',
           duration: 5000,
@@ -106,13 +109,94 @@ export default function Chapter({ data = {} }) {
     }
   }
 
-  const shareVerseDialog =async (verseName: string) => {
-    
+  const shareVerseDialog = async (verseName: string) => {
+    const newVerseArray = [...versesAboutToShare];
+    newVerseArray.push(verseName);
+    setVersesAboutToShare(newVerseArray);
+    // const commaVerses = newVerseArray.join(',');
+
+    // if (toastIdRef.current) {
+    //   return;
+    // }
+
+    // toastIdRef.current = toast({
+    //   status: 'info',
+    //   duration: 60000, // Arbitrarily large
+    //   isClosable: true,
+    //   position: 'bottom-right',
+    //   render: () => (
+    //     <Box color='white' p={3} bg='blue.500'>
+    //       <Text fontSize='md'>Ready to share verse(s)</Text>
+    //       <Text fontSize='sm'>({commaVerses})</Text>
+    //       <Button size='sm' onClick={() => {
+            
+    //         shareVerse(commaVerses);
+    //         if (toastIdRef.current) {
+    //           toast.close(toastIdRef.current)
+    //           setVersesAboutToShare([])
+    //         }
+    //       }}>{'Share'}</Button>
+    //       <Button size='sm' onClick={() => {
+    //         // router.push(lastVisited);
+    //         if (toastIdRef.current) {
+    //           toast.close(toastIdRef.current)
+    //           setVersesAboutToShare([])
+    //         }
+    //       }}>{'Cancel'}</Button>
+    //     </Box>
+    //   ),
+    // })
   }
+
+  useEffect(() => {
+    if (versesAboutToShare.length > 0) {
+      if (toastIdRef.current) {
+        // Already open
+        return;
+      }
+
+      // TODO may need a regular modal for this. Try to make the component stand alone
+      // because toast doesn't appear to be rerendered on a hook
+
+      // First time it is opened
+      toastIdRef.current = toast({
+        status: 'info',
+        duration: 60000, // Arbitrarily large
+        isClosable: true,
+        position: 'bottom-right',
+        render: () => (
+          <Box color='white' p={3} bg='blue.500'>
+            <Text fontSize='md'>Ready to share verse(s)</Text>
+            <Text fontSize='sm'>({versesAboutToShare.join(',')})</Text>
+            <Button size='sm' onClick={() => {
+              
+              shareVerse(versesAboutToShare.join(','));
+              if (toastIdRef.current) {
+                toast.close(toastIdRef.current)
+                setVersesAboutToShare([])
+              }
+            }}>{'Share'}</Button>
+            <Button size='sm' onClick={() => {
+              // router.push(lastVisited);
+              if (toastIdRef.current) {
+                toast.close(toastIdRef.current)
+                setVersesAboutToShare([])
+              }
+            }}>{'Cancel'}</Button>
+          </Box>
+        ),
+      })
+    } else {
+      // Nothing to share, close the toast
+      if (toastIdRef.current) {
+        toast.close(toastIdRef.current);
+      }
+    }
+  }, [versesAboutToShare]);
 
   const verses = theContent.verses.map((verse) => (
     <span key={verse.verseName}>
-      <span onClick={() => shareVerse(verse.verseName)} className={styles.versenumber}> {verse.verseName} </span>
+      <span onClick={() => shareVerseDialog(verse.verseName)} className={styles.versenumber}> {verse.verseName} </span>
       <span>{formatText(verse.text, verse.verseName)}</span>
     </span>
   ))
