@@ -24,6 +24,7 @@ export async function getStaticProps() {
   return {
     props: {
       data: allText
-    }
+    },
+    revalidate: 60 * 60 * 24 // 1 day
   }
 }
