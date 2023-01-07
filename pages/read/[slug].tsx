@@ -10,12 +10,19 @@ import Highlighter from 'react-highlight-words';
 import { setLastVisited } from '../../lib/local-data';
 import { useEffect } from 'react';
 
+/**
+ * Responsible for rendering an entire chapter
+ * 
+ * @param param0 
+ * @returns 
+ */
 export default function Chapter({ data = {} }) {
 
   const router = useRouter();
   const toast = useToast();
 
-  const highlightedVerse = router.query.verse;
+  // Possible query params for highlighting
+  const highlightedVerse = router.query.verse as string;
   const highlightedText = router.query.highlight as string;
 
   const theContent = data as any;
@@ -33,19 +40,26 @@ export default function Chapter({ data = {} }) {
     return <ErrorPage statusCode={403} />
   }
 
+  /**
+   * Determines whether a verse should be highlighted or not (or in part).
+   * 
+   * @param text 
+   * @param verseName 
+   * @returns 
+   */
   const formatText = (text: string, verseName?: string) => {
     if (highlightedVerse) {
-      if (highlightedVerse == verseName) {
-        // Verse selected in route
+      // Comma-separated, possibly
+      const versesToHighlight = highlightedVerse.split(',');
+      const found = versesToHighlight.find(toFind => toFind == verseName);
+      if (found) {
         return <Highlighter
           searchWords={[text]}
           autoEscape={true}
           textToHighlight={text}
         />
-      } else {
-        // Verse not found from route
-        return text;
       }
+      return text;
     } else if (highlightedText) {
       // Highlight each word
       const searchArray = highlightedText.trim().split(' ');
@@ -60,7 +74,7 @@ export default function Chapter({ data = {} }) {
     }
   }
 
-  const shareVerse = async (verseName) => {
+  const shareVerse = async (verseName: string) => {
     const url = `${window.origin}${router.basePath}/read/${slug}?verse=${verseName}`;
     try {
       if (navigator.share) {
@@ -90,6 +104,10 @@ export default function Chapter({ data = {} }) {
     } catch (_) {
       // This can be ignored (the user cancelled the share operation)
     }
+  }
+
+  const shareVerseDialog =async (verseName: string) => {
+    
   }
 
   const verses = theContent.verses.map((verse) => (
