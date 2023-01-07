@@ -65,7 +65,8 @@ export async function getStaticProps({ params }) {
   return {
     props: {
       data: allBookText
-    }
+    },
+    revalidate: 60 * 60 * 24 * 7 // 1 week
   }
 }
 
@@ -73,6 +74,6 @@ export async function getStaticPaths() {
   const { thebooks } = await getChapters();
   return {
     paths: thebooks.map((book) => ({ params: { slug: book.bookName } })),
-    fallback: true
+    fallback: 'blocking'
   }
 }
