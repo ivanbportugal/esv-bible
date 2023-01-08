@@ -8,7 +8,7 @@ import { Box, Button, IconButton, Link, Text, Tooltip, useToast } from '@chakra-
 import { ArrowBackIcon, ArrowForwardIcon, ArrowLeftIcon } from '@chakra-ui/icons';
 import Highlighter from 'react-highlight-words';
 import { setLastVisited } from '../../lib/local-data';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useReducer, useRef, useState } from 'react';
 
 /**
  * Responsible for rendering an entire chapter
@@ -29,11 +29,51 @@ export default function Chapter({ data = {} }) {
   const theContent = data as any;
   const slug = theContent?.unique;
 
-  const [versesAboutToShare, setVersesAboutToShare] = useState([]);
+  const [versesAboutToShare, setVersesAboutToShare] = useState(new Set());
+  const forceUpdate = useReducer(() => ({}), {})[1] as () => void
 
   useEffect(() => {
     setLastVisited(router.asPath);
   }, [router]);
+
+  useEffect(() => {
+    console.log('COUNT outside: ' + versesAboutToShare.size);
+    if (versesAboutToShare.size > 0) {
+      console.log('COUNT: ' + versesAboutToShare.size);
+      console.log('current: ' + toastIdRef.current);
+      const commaSep = Array.from(versesAboutToShare).join(',');
+      if (toastIdRef.current) {
+        // Already open
+        toast.update(toastIdRef.current, {
+          description: commaSep,
+          render: ({ description }) => shareToastContent(description)
+        })
+        return;
+      }
+
+      // TODO may need a regular modal for this. Try to make the component stand alone
+      // because toast doesn't appear to be rerendered on a hook
+
+      // First time it is opened
+      toastIdRef.current = toast({
+        status: 'info',
+        duration: 60000, // Arbitrarily large
+        isClosable: true,
+        position: 'bottom',
+        description: commaSep,
+        render: ({
+          description
+        }) => (
+          shareToastContent(description)
+        ),
+      })
+    } else {
+      // Nothing to share, close the toast
+      destroyToast()
+      console.log('none!' + versesAboutToShare.size)
+      console.log('current: ' + toastIdRef.current)
+    }
+  }, [versesAboutToShare, toastIdRef]);
 
   if (!router.isFallback && !slug) {
     return <ErrorPage statusCode={404} />
@@ -88,7 +128,7 @@ export default function Chapter({ data = {} }) {
       } else if (navigator.clipboard) {
         await navigator.clipboard.writeText(url)
         toast({
-          title: 'Copied verse(s) URL.',
+          title: `Copied verse(s) ${verseName}`,
           description: '',
           status: 'success',
           duration: 5000,
@@ -109,90 +149,37 @@ export default function Chapter({ data = {} }) {
     }
   }
 
-  const shareVerseDialog = async (verseName: string) => {
-    const newVerseArray = [...versesAboutToShare];
-    newVerseArray.push(verseName);
+  const shareVerseDialog = (verseName: string) => {
+    const newVerseArray = new Set(versesAboutToShare);
+    newVerseArray.add(verseName);
     setVersesAboutToShare(newVerseArray);
-    // const commaVerses = newVerseArray.join(',');
-
-    // if (toastIdRef.current) {
-    //   return;
-    // }
-
-    // toastIdRef.current = toast({
-    //   status: 'info',
-    //   duration: 60000, // Arbitrarily large
-    //   isClosable: true,
-    //   position: 'bottom-right',
-    //   render: () => (
-    //     <Box color='white' p={3} bg='blue.500'>
-    //       <Text fontSize='md'>Ready to share verse(s)</Text>
-    //       <Text fontSize='sm'>({commaVerses})</Text>
-    //       <Button size='sm' onClick={() => {
-            
-    //         shareVerse(commaVerses);
-    //         if (toastIdRef.current) {
-    //           toast.close(toastIdRef.current)
-    //           setVersesAboutToShare([])
-    //         }
-    //       }}>{'Share'}</Button>
-    //       <Button size='sm' onClick={() => {
-    //         // router.push(lastVisited);
-    //         if (toastIdRef.current) {
-    //           toast.close(toastIdRef.current)
-    //           setVersesAboutToShare([])
-    //         }
-    //       }}>{'Cancel'}</Button>
-    //     </Box>
-    //   ),
-    // })
+    console.log('finished share', newVerseArray);
+    forceUpdate();
   }
 
-  useEffect(() => {
-    if (versesAboutToShare.length > 0) {
-      if (toastIdRef.current) {
-        // Already open
-        return;
-      }
-
-      // TODO may need a regular modal for this. Try to make the component stand alone
-      // because toast doesn't appear to be rerendered on a hook
-
-      // First time it is opened
-      toastIdRef.current = toast({
-        status: 'info',
-        duration: 60000, // Arbitrarily large
-        isClosable: true,
-        position: 'bottom-right',
-        render: () => (
-          <Box color='white' p={3} bg='blue.500'>
-            <Text fontSize='md'>Ready to share verse(s)</Text>
-            <Text fontSize='sm'>({versesAboutToShare.join(',')})</Text>
-            <Button size='sm' onClick={() => {
-              
-              shareVerse(versesAboutToShare.join(','));
-              if (toastIdRef.current) {
-                toast.close(toastIdRef.current)
-                setVersesAboutToShare([])
-              }
-            }}>{'Share'}</Button>
-            <Button size='sm' onClick={() => {
-              // router.push(lastVisited);
-              if (toastIdRef.current) {
-                toast.close(toastIdRef.current)
-                setVersesAboutToShare([])
-              }
-            }}>{'Cancel'}</Button>
-          </Box>
-        ),
-      })
-    } else {
-      // Nothing to share, close the toast
-      if (toastIdRef.current) {
-        toast.close(toastIdRef.current);
-      }
+  const destroyToast = () => {
+    if (toastIdRef.current) {
+      toast.close(toastIdRef.current)
+      toastIdRef.current = undefined
+      setVersesAboutToShare(new Set())
     }
-  }, [versesAboutToShare]);
+  }
+
+  const shareToastContent = (description: any) => {
+    return (
+      <Box color='white' p={3} bg='blue.500'>
+        <Text fontSize='md'>Ready to share verse(s)</Text>
+        <Text fontSize='sm'>({description})</Text>
+        <Button size='sm' onClick={() => {
+          shareVerse(description as any);
+          destroyToast()
+        }}>{'Share'}</Button>
+        <Button size='sm' onClick={() => {
+          destroyToast()
+        }}>{'Cancel'}</Button>
+      </Box>
+    )
+  }
 
   const verses = theContent.verses.map((verse) => (
     <span key={verse.verseName}>
