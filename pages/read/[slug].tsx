@@ -37,10 +37,7 @@ export default function Chapter({ data = {} }) {
   }, [router]);
 
   useEffect(() => {
-    console.log('COUNT outside: ' + versesAboutToShare.size);
     if (versesAboutToShare.size > 0) {
-      console.log('COUNT: ' + versesAboutToShare.size);
-      console.log('current: ' + toastIdRef.current);
       const commaSep = Array.from(versesAboutToShare).join(',');
       if (toastIdRef.current) {
         // Already open
@@ -70,8 +67,6 @@ export default function Chapter({ data = {} }) {
     } else {
       // Nothing to share, close the toast
       destroyToast()
-      console.log('none!' + versesAboutToShare.size)
-      console.log('current: ' + toastIdRef.current)
     }
   }, [versesAboutToShare, toastIdRef]);
 
@@ -153,7 +148,6 @@ export default function Chapter({ data = {} }) {
     const newVerseArray = new Set(versesAboutToShare);
     newVerseArray.add(verseName);
     setVersesAboutToShare(newVerseArray);
-    console.log('finished share', newVerseArray);
     forceUpdate();
   }
 
@@ -167,14 +161,14 @@ export default function Chapter({ data = {} }) {
 
   const shareToastContent = (description: any) => {
     return (
-      <Box color='white' p={3} bg='blue.500'>
+      <Box color='white' p={3} bg='blue.800'>
         <Text fontSize='md'>Ready to share verse(s)</Text>
         <Text fontSize='sm'>({description})</Text>
-        <Button size='sm' onClick={() => {
+        <Button size='sm' colorScheme={'teal'} className={styles.sharetoastbutton} onClick={() => {
           shareVerse(description as any);
           destroyToast()
         }}>{'Share'}</Button>
-        <Button size='sm' onClick={() => {
+        <Button size='sm' colorScheme={'teal'} className={styles.sharetoastbutton} onClick={() => {
           destroyToast()
         }}>{'Cancel'}</Button>
       </Box>

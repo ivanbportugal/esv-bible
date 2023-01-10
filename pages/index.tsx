@@ -66,12 +66,12 @@ export default function Home({ data = {} }) {
     <div className={styles.container}>
       <Head>
         <title>The ESV Bible</title>
-        <meta name="description" content="The ESV translation" />
+        <meta name="description" content="The ESV translation of the Bible. Just the text, no study notes or anything." />
       </Head>
 
       <main className={styles.main}>
         <h1 className={styles.title}>
-          Just simple access to awesome text.
+          Simple access to awesome text.
         </h1>
 
         <div className={styles.description}>
@@ -87,12 +87,16 @@ export default function Home({ data = {} }) {
                 <p>No app to download. Can be installed on your home screen. No account is needed. Searches are done on the browser.</p>
               </li>
               <li>
+                <p style={{textDecoration: 'underline'}}>Do you have any study material?</p>
+                <p>No, but there are several neat resources online. Start here: <a target='_blank' rel="noreferrer" href='https://bible.org'>Bible.org</a></p>
+              </li>
+              <li>
                 <p style={{textDecoration: 'underline'}}>Do you want money for your work?</p>
-                <p>No. But you can always <a target='_blank' rel="noreferrer" href='https://buymeacoffee.com/ivanportugal'>Buy Me a Coffee</a></p>
+                <p>No, but you can always <a target='_blank' rel="noreferrer" href='https://buymeacoffee.com/ivanportugal'>Buy Me a Coffee</a></p>
               </li>
               <li>
                 <p style={{textDecoration: 'underline'}}>Do you track my usage?</p>
-                <p>No. But more importantly, not possible (This is a simple web app. There is no server).</p>
+                <p>Nothing other than standard Google Analytics to see if people are actually using this.</p>
               </li>
               <li>
                 <p style={{textDecoration: 'underline'}}>Which translations do you support</p>
