@@ -129,6 +129,10 @@
   margin: .75rem .6rem;
 }
 
+.sharetoastbutton {
+  margin: 1rem 0.5rem 0 0;
+}
+
 .chapterlist {
   margin: 1em 0;
   line-height: 1;
