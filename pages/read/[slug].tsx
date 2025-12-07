@@ -183,12 +183,11 @@ export default function Chapter({ data = {} }) {
   ))
 
   const prev = theContent.prev.link
-    ? <Link as={NextLink} passHref href={theContent.prev.link}><a className={styles.nextprev}><Tooltip label={theContent.prev.name}><IconButton aria-label='Previous' icon={<ArrowBackIcon />} /></Tooltip></a></Link>
-    : <Link as={NextLink} passHref href='#'><a className={styles.nextprev}><Tooltip label={theContent.prev.name}><IconButton aria-label='Previous' icon={<ArrowBackIcon />} /></Tooltip></a></Link>
+    ? <Link as={NextLink} passHref href={theContent.prev.link} className={styles.nextprev}><Tooltip label={theContent.prev.name}><IconButton aria-label='Previous' icon={<ArrowBackIcon />} /></Tooltip></Link>
+    : <Link as={NextLink} passHref href='#' className={styles.nextprev}><Tooltip label={theContent.prev.name}><IconButton aria-label='Previous' icon={<ArrowBackIcon />} /></Tooltip></Link>
   const next = theContent.next.link
-    ? <Link as={NextLink} passHref href={theContent.next.link}><a className={styles.nextnext}><Tooltip label={theContent.next.name}><IconButton aria-label='Next' icon={<ArrowForwardIcon />} /></Tooltip></a></Link>
-    : <Link as={NextLink} passHref href='#'><a className={styles.nextprev}><Tooltip label={theContent.next.name}><IconButton aria-label='Next' icon={<ArrowForwardIcon />} /></Tooltip></a></Link>
-
+    ? <Link as={NextLink} passHref href={theContent.next.link} className={styles.nextnext}><Tooltip label={theContent.next.name}><IconButton aria-label='Next' icon={<ArrowForwardIcon />} /></Tooltip></Link>
+    : <Link as={NextLink} passHref href='#' className={styles.nextprev}><Tooltip label={theContent.next.name}><IconButton aria-label='Next' icon={<ArrowForwardIcon />} /></Tooltip></Link>
   return <div className={styles.container}>
     <Head>
       <title>ESV: {theContent.bookName} {theContent.chapterName}</title>

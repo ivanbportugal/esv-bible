@@ -63,7 +63,7 @@ export default function SearchComponent({ renderedData }) {
     const unique = key.substring(0, key.indexOf(':'));
     const url = `/read/${unique}?highlight=${searchValue}`;
     return <ListItem key={key}>
-      <div><Link href={url}><a className={styles.suglink}>{formatText(key)}</a></Link></div>
+      <div><Link className={styles.suglink} href={url}>{formatText(key)}</Link></div>
       <p>{ formatText(text) }</p>
     </ListItem>
   });

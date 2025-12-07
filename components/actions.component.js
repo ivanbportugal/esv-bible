@@ -54,15 +54,11 @@ export default function ActionsComponent() {
   const renderMenu = () => {
     return (<>
       <SlideFade in={isOpen} className={styles.actionswrapperitemsparent}>
-        <Link href='/'>
-          <a>
+        <Link href='/' passHref>
             <IconButton className={`${styles.actionswrapperitem} ${styles.homeiconbutton}`} size='sm' aria-label='Home' icon={<HomeIcon />} />
-          </a>
         </Link>
-        <Link href='/search'>
-          <a>
+        <Link href='/search' passHref>
             <IconButton className={styles.actionswrapperitem} size='sm' aria-label='Search' icon={<Search2Icon />} />
-          </a>
         </Link>
         {colorIcon}
         <IconButton className={styles.actionswrapperitem} size='sm' aria-label='Copy URL' onClick={onCopyClicked} icon={<CopyIcon />} />
