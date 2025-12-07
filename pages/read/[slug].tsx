@@ -4,11 +4,17 @@ import NextLink from 'next/link';
 import ErrorPage from 'next/error';
 import { getChapters, getChapter } from '../../lib/get-json';
 import styles from '../../styles/Home.module.css'
-import { Box, Button, IconButton, Link, Text, Tooltip, useToast } from '@chakra-ui/react';
+import { Box, Button, IconButton, Link, Text, createToaster, Toaster } from '@chakra-ui/react';
 import { ArrowBackIcon, ArrowForwardIcon, ArrowLeftIcon } from '@chakra-ui/icons';
 import Highlighter from 'react-highlight-words';
 import { setLastVisited } from '../../lib/local-data';
 import { useEffect, useReducer, useRef, useState } from 'react';
+
+// Create toaster instance
+const toaster = createToaster({
+  placement: 'bottom',
+  duration: 5000,
+});
 
 /**
  * Responsible for rendering an entire chapter
@@ -19,8 +25,7 @@ import { useEffect, useReducer, useRef, useState } from 'react';
 export default function Chapter({ data = {} }) {
 
   const router = useRouter();
-  const toast = useToast();
-  const toastIdRef = useRef<any>();
+  const toastIdRef = useRef<any>(undefined);
 
   // Possible query params for highlighting
   const highlightedVerse = router.query.verse as string;
@@ -41,9 +46,9 @@ export default function Chapter({ data = {} }) {
       const commaSep = Array.from(versesAboutToShare).join(',');
       if (toastIdRef.current) {
         // Already open
-        toast.update(toastIdRef.current, {
+        toaster.update(toastIdRef.current, {
           description: commaSep,
-          render: ({ description }) => shareToastContent(description)
+          render: () => shareToastContent(commaSep)
         })
         return;
       }
@@ -52,17 +57,12 @@ export default function Chapter({ data = {} }) {
       // because toast doesn't appear to be rerendered on a hook
 
       // First time it is opened
-      toastIdRef.current = toast({
-        status: 'info',
+      toastIdRef.current = toaster.create({
+        type: 'info',
         duration: 60000, // Arbitrarily large
-        isClosable: true,
         position: 'bottom',
         description: commaSep,
-        render: ({
-          description
-        }) => (
-          shareToastContent(description)
-        ),
+        render: () => shareToastContent(commaSep),
       })
     } else {
       // Nothing to share, close the toast
@@ -122,21 +122,19 @@ export default function Chapter({ data = {} }) {
         });
       } else if (navigator.clipboard) {
         await navigator.clipboard.writeText(url)
-        toast({
+        toaster.create({
           title: `Copied verse(s) ${verseName}`,
           description: '',
-          status: 'success',
+          type: 'success',
           duration: 5000,
-          isClosable: true
         });
       } else {
         console.log('Couldn\'t share the url');
-        toast({
+        toaster.create({
           title: 'Could not grab URL.',
           description: 'There was an error trying to get the URL on your clipboard. Please try again later...',
-          status: 'error',
+          type: 'error',
           duration: 5000,
-          isClosable: true
         });
       }
     } catch (_) {
@@ -153,7 +151,7 @@ export default function Chapter({ data = {} }) {
 
   const destroyToast = () => {
     if (toastIdRef.current) {
-      toast.close(toastIdRef.current)
+      toaster.dismiss(toastIdRef.current)
       toastIdRef.current = undefined
       setVersesAboutToShare(new Set())
     }
@@ -183,19 +181,27 @@ export default function Chapter({ data = {} }) {
   ))
 
   const prev = theContent.prev.link
-    ? <Link as={NextLink} passHref href={theContent.prev.link} className={styles.nextprev}><Tooltip label={theContent.prev.name}><IconButton aria-label='Previous' icon={<ArrowBackIcon />} /></Tooltip></Link>
-    : <Link as={NextLink} passHref href='#' className={styles.nextprev}><Tooltip label={theContent.prev.name}><IconButton aria-label='Previous' icon={<ArrowBackIcon />} /></Tooltip></Link>
+    ? <Link asChild href={theContent.prev.link} className={styles.nextprev}>
+        <IconButton aria-label={theContent.prev.name}><ArrowBackIcon /></IconButton>
+      </Link>
+    : <Link asChild href='#' className={styles.nextprev}>
+        <IconButton aria-label={theContent.prev.name} disabled><ArrowBackIcon /></IconButton>
+      </Link>
   const next = theContent.next.link
-    ? <Link as={NextLink} passHref href={theContent.next.link} className={styles.nextnext}><Tooltip label={theContent.next.name}><IconButton aria-label='Next' icon={<ArrowForwardIcon />} /></Tooltip></Link>
-    : <Link as={NextLink} passHref href='#' className={styles.nextprev}><Tooltip label={theContent.next.name}><IconButton aria-label='Next' icon={<ArrowForwardIcon />} /></Tooltip></Link>
+    ? <Link asChild href={theContent.next.link} className={styles.nextnext}>
+        <IconButton aria-label={theContent.next.name}><ArrowForwardIcon /></IconButton>
+      </Link>
+    : <Link asChild href='#' className={styles.nextprev}>
+        <IconButton aria-label={theContent.next.name} disabled><ArrowForwardIcon /></IconButton>
+      </Link>
   return <div className={styles.container}>
     <Head>
       <title>{`ESV: ${theContent.bookName} ${theContent.chapterName}`}</title>
       <meta name="description" content="The ESV translation" />
     </Head>
-    <Button leftIcon={<ArrowLeftIcon />} className={styles.bookindexbutton} size='sm'>
-      <Link as={NextLink} href={`/book/${theContent.bookName}`} passHref>
-        {theContent.bookName}
+    <Button className={styles.bookindexbutton} size='sm'>
+      <Link asChild href={`/book/${theContent.bookName}`}>
+        <span><ArrowLeftIcon /> {theContent.bookName}</span>
       </Link>
     </Button>
     <main className={styles.main}>

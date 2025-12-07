@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Document } from 'flexsearch';
 import styles from './Search.module.css';
 import Link from 'next/link';
-import { IconButton, Input, List, ListItem } from '@chakra-ui/react';
+import { IconButton, Input, List } from '@chakra-ui/react';
 import { CloseIcon } from '@chakra-ui/icons';
 import Highlighter from 'react-highlight-words';
 import { indexText } from '../lib/index-gen';
@@ -62,10 +62,10 @@ export default function SearchComponent({ renderedData }) {
   const renderedSuggestions = suggestions?.map(({ key, text }) => {
     const unique = key.substring(0, key.indexOf(':'));
     const url = `/read/${unique}?highlight=${searchValue}`;
-    return <ListItem key={key}>
+    return <List.Item key={key}>
       <div><Link className={styles.suglink} href={url}>{formatText(key)}</Link></div>
       <p>{ formatText(text) }</p>
-    </ListItem>
+    </List.Item>
   });
 
   const onCloseClicked = () => {
@@ -91,10 +91,10 @@ export default function SearchComponent({ renderedData }) {
   return <>
     <div className={styles.searchwrapper}>
       <Input value={searchValue} placeholder='Search Anything' onChange={onSearchType} />
-      <IconButton aria-label='Cancel' icon={<CloseIcon />} onClick={() => onCloseClicked()} />
+      <IconButton aria-label='Cancel' onClick={() => onCloseClicked()}><CloseIcon /></IconButton>
     </div>
-    {suggestions.length > 0 && <List spacing={3} className={styles.suggestions}>
+    {suggestions.length > 0 && <List.Root className={styles.suggestions}>
       {renderedSuggestions}
-    </List>}
+    </List.Root>}
   </>
 }

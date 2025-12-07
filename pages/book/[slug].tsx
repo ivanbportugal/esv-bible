@@ -25,11 +25,11 @@ export default function Book ({ data = {}}) {
     const unique = `${theContent.bookName}-${chapterName}`;
     const url = `/read/${unique}`;
 
-    return <ListItem key={chapterName} className={styles.booklist}>
-        <Link as={NextLink} href={url} passHref>
-          {chapterName}
+    return <List.Item key={chapterName} className={styles.booklist}>
+        <Link asChild href={url}>
+          <NextLink href={url}>{chapterName}</NextLink>
         </Link>
-      </ListItem>
+      </List.Item>
   });
   
   return (
@@ -46,9 +46,9 @@ export default function Book ({ data = {}}) {
 
         <hr />
 
-        <List spacing={3} className={styles.homelist}>
+        <List.Root className={styles.homelist}>
           {listOfAll}
-        </List>
+        </List.Root>
 
       </main>
 

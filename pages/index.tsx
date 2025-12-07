@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import NextLink from 'next/link'
-import { Avatar, Box, Button, Link, List, ListItem, Popover, PopoverArrow, PopoverBody, PopoverCloseButton, PopoverContent, PopoverHeader, PopoverTrigger, Text, useToast, Wrap } from '@chakra-ui/react'
+import { Box, Button, Link, List, Text, Wrap, createToaster } from '@chakra-ui/react'
 import styles from '../styles/Home.module.css';
 import { getChapters } from '../lib/get-json';
 import { getBookMap } from '../lib/get-book-descriptions';
@@ -8,59 +8,49 @@ import { getLastVisited } from '../lib/local-data';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
+// Create toaster instance
+const toaster = createToaster({
+  placement: 'bottom-right',
+  duration: 3000,
+});
+
 export default function Home({ data = {} }) {
 
   const allBookChapters: Array<any> = data as any;
-  const toast = useToast();
   const router = useRouter();
 
   const renderBooks = allBookChapters.map(({ bookName }) => {
     const url = `/book/${bookName}`;
     const bookMeta = getBookMap(bookName);
-    return <ListItem key={bookName}>
+    return <List.Item key={bookName}>
       <Wrap className={styles.booklist}>
-        <Popover>
-          <PopoverTrigger>
-            <Avatar name={bookMeta.category} />
-          </PopoverTrigger>
-          <PopoverContent>
-            <PopoverArrow />
-            <PopoverCloseButton />
-            <PopoverHeader fontWeight='semibold'>{bookMeta.category}</PopoverHeader>
-            <PopoverBody>
-              {bookMeta.author} - {bookMeta.date}
-            </PopoverBody>
-          </PopoverContent>
-          <Link as={NextLink} href={url} passHref>
-            {bookName}
-          </Link>
-        </Popover>
+        <Link asChild href={url}>
+          <NextLink href={url}>{bookName}</NextLink>
+        </Link>
       </Wrap>
-    </ListItem>
+    </List.Item>
   });
 
   useEffect(() => {
     getLastVisited().then(lastVisited => {
       if (lastVisited) {
-        toast({
-          status: 'info',
+        toaster.create({
+          type: 'info',
           duration: 3000,
-          isClosable: true,
-          position: 'bottom-right',
           render: () => (
             <Box color='white' p={3} bg='blue.500'>
               <Text fontSize='md'>Pick up where you left off?</Text>
               <Text fontSize='sm'>({lastVisited})</Text>
               <Button size='sm' onClick={() => {
                 router.push(lastVisited);
-                toast.closeAll();
+                toaster.dismiss();
               }}>{'Let\'s Go!'}</Button>
             </Box>
           ),
         })
       }
     })
-  }, [router, toast]);
+  }, [router]);
 
   return (
     <div className={styles.container}>
@@ -113,9 +103,9 @@ export default function Home({ data = {} }) {
 
         <hr />
 
-        <List spacing={5} className={styles.homelist}>
+        <List.Root className={styles.homelist}>
           {renderBooks}
-        </List>
+        </List.Root>
 
       </main>
 

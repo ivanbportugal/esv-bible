@@ -1,13 +1,13 @@
-// 1. import `extendTheme` function
-import { extendTheme } from '@chakra-ui/react'
+// 1. import `createSystem` and `defaultConfig`
+import { createSystem, defaultConfig } from '@chakra-ui/react'
 
-// 2. Add your color mode config
-const config = {
-  initialColorMode: 'system',
-  useSystemColorMode: false,
-}
+// 2. Create the system with config
+const system = createSystem(defaultConfig, {
+  theme: {
+    tokens: {
+      colors: {},
+    },
+  },
+})
 
-// 3. extend the theme
-const theme = extendTheme({ config })
-
-export default theme
+export default system

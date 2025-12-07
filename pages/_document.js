@@ -1,7 +1,5 @@
-import { ColorModeScript } from '@chakra-ui/react';
 import { Html, Head, Main, NextScript } from 'next/document';
 import { prefix } from '../lib/prefix.js';
-import theme from '../components/theme';
 
 function MyDocument() {
   const favicon = `${prefix}/favicon.ico`;
@@ -69,7 +67,6 @@ function MyDocument() {
         />
       </Head>
       <body>
-        <ColorModeScript initialColorMode={theme.config.initialColorMode} />
         <Main />
         <NextScript />
       </body>
