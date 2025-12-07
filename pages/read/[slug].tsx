@@ -190,7 +190,7 @@ export default function Chapter({ data = {} }) {
     : <Link as={NextLink} passHref href='#' className={styles.nextprev}><Tooltip label={theContent.next.name}><IconButton aria-label='Next' icon={<ArrowForwardIcon />} /></Tooltip></Link>
   return <div className={styles.container}>
     <Head>
-      <title>ESV: {theContent.bookName} {theContent.chapterName}</title>
+      <title>{`ESV: ${theContent.bookName} ${theContent.chapterName}`}</title>
       <meta name="description" content="The ESV translation" />
     </Head>
     <Button leftIcon={<ArrowLeftIcon />} className={styles.bookindexbutton} size='sm'>
