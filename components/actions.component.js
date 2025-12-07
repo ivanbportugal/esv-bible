@@ -1,20 +1,29 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { IconButton, useColorMode, useToast, SlideFade } from '@chakra-ui/react';
+import { IconButton, createToaster } from '@chakra-ui/react';
 import { MoonIcon, Search2Icon, SunIcon, CopyIcon, HamburgerIcon } from '@chakra-ui/icons';
 import HomeIcon from './homeicon';
 import styles from './Actions.module.css';
 
+// Create toaster instance
+const toaster = createToaster({
+  placement: 'bottom',
+  duration: 5000,
+});
+
 export default function ActionsComponent() {
 
-  const { colorMode, toggleColorMode } = useColorMode();
-  const toast = useToast();
-
   const [isOpen, setOpen] = useState(false);
+  const [isDark, setIsDark] = useState(false);
 
-  const colorIcon = (colorMode === 'light') 
-    ? <IconButton className={styles.actionswrapperitem} size='sm' aria-label='Toggle Dark Mode' icon={<SunIcon />} onClick={toggleColorMode} />
-    : <IconButton className={styles.actionswrapperitem} size='sm' aria-label='Toggle Dark Mode' icon={<MoonIcon />} onClick={toggleColorMode} />
+  const toggleColorMode = () => {
+    setIsDark(!isDark);
+    document.documentElement.classList.toggle('dark');
+  };
+
+  const colorIcon = isDark
+    ? <IconButton className={styles.actionswrapperitem} size='sm' aria-label='Toggle Dark Mode' onClick={toggleColorMode}><MoonIcon /></IconButton>
+    : <IconButton className={styles.actionswrapperitem} size='sm' aria-label='Toggle Dark Mode' onClick={toggleColorMode}><SunIcon /></IconButton>
 
   const onCopyClicked = async () => {
 
@@ -29,21 +38,19 @@ export default function ActionsComponent() {
         });
       } else if (navigator.clipboard) {
         await navigator.clipboard.writeText(url)
-        toast({
+        toaster.create({
           title: 'Copied URL.',
           description: '',
-          status: 'success',
+          type: 'success',
           duration: 5000,
-          isClosable: true
         });
       } else {
         console.log('Couldn\'t share the url');
-        toast({
+        toaster.create({
           title: 'Could not grab URL.',
           description: 'There was an error trying to get the URL on your clipboard. Please try again later...',
-          status: 'error',
+          type: 'error',
           duration: 5000,
-          isClosable: true
         });
       }
     } catch (e) {
@@ -53,22 +60,22 @@ export default function ActionsComponent() {
 
   const renderMenu = () => {
     return (<>
-      <SlideFade in={isOpen} className={styles.actionswrapperitemsparent}>
+      <div className={`${styles.actionswrapperitemsparent} ${isOpen ? styles.open : ''}`}>
         <Link href='/' passHref>
-            <IconButton className={`${styles.actionswrapperitem} ${styles.homeiconbutton}`} size='sm' aria-label='Home' icon={<HomeIcon />} />
+            <IconButton className={`${styles.actionswrapperitem} ${styles.homeiconbutton}`} size='sm' aria-label='Home'><HomeIcon /></IconButton>
         </Link>
         <Link href='/search' passHref>
-            <IconButton className={styles.actionswrapperitem} size='sm' aria-label='Search' icon={<Search2Icon />} />
+            <IconButton className={styles.actionswrapperitem} size='sm' aria-label='Search'><Search2Icon /></IconButton>
         </Link>
         {colorIcon}
-        <IconButton className={styles.actionswrapperitem} size='sm' aria-label='Copy URL' onClick={onCopyClicked} icon={<CopyIcon />} />
-      </SlideFade>
+        <IconButton className={styles.actionswrapperitem} size='sm' aria-label='Copy URL' onClick={onCopyClicked}><CopyIcon /></IconButton>
+      </div>
     </>)
   }
 
   return (
     <div className={styles.actionswrapper} >
-      <IconButton className={styles.actionswrapperitem} size='sm' aria-label='Hamburger' icon={<HamburgerIcon />} onClick={() => setOpen(!isOpen)} />
+      <IconButton className={styles.actionswrapperitem} size='sm' aria-label='Hamburger' onClick={() => setOpen(!isOpen)}><HamburgerIcon /></IconButton>
       {renderMenu()}
     </div>
   );

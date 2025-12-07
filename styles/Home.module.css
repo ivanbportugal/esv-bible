@@ -121,9 +121,6 @@
   list-style: none;
   text-decoration: underline;
 }
-.booklist :global .chakra-avatar {
-  cursor: pointer;
-}
 
 .bookindexbutton {
   margin: .75rem .6rem;
